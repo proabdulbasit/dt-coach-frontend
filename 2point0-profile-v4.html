@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2.0 Profile — Darren Tebbenham</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0b09;--surface:#171512;--surface2:#1f1d18;--gold:#c9a55a;--gold-dim:rgba(201,165,90,0.12);--gold-border:rgba(201,165,90,0.28);--cream:#f0ead8;--muted:#7a7060;--white:#faf7f0;--ink:#12110f;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--cream);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.5;}
+.app{max-width:800px;margin:0 auto;padding:0 24px;}
+.screen{display:none;}
+.screen.active{display:block;}
+#intro{min-height:100vh;display:none;flex-direction:column;justify-content:center;padding:80px 0 60px;}
+#intro.active{display:flex;}
+.intro-eyebrow{font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;animation:fadeUp 0.6s ease both;}
+.intro-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,84px);font-weight:700;line-height:0.92;color:var(--white);margin-bottom:10px;animation:fadeUp 0.6s 0.1s ease both;}
+.intro-title .gold{color:var(--gold);}
+.intro-subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--muted);margin-bottom:40px;animation:fadeUp 0.6s 0.18s ease both;}
+.intro-desc{font-size:13px;font-weight:300;line-height:1.95;color:rgba(240,234,216,0.68);max-width:560px;margin-bottom:20px;animation:fadeUp 0.6s 0.25s ease both;}
+.intro-desc strong{color:var(--cream);font-weight:500;}
+.intro-book-quote{border-left:2px solid var(--gold);padding:12px 18px;margin-bottom:40px;animation:fadeUp 0.6s 0.3s ease both;}
+.ibq-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:rgba(240,234,216,0.6);line-height:1.55;margin-bottom:4px;}
+.ibq-source{font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.intro-meta{display:flex;gap:32px;margin-bottom:44px;animation:fadeUp 0.6s 0.33s ease both;}
+.meta-item{display:flex;flex-direction:column;gap:3px;}
+.meta-label{font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);}
+.meta-value{font-size:12px;font-weight:300;color:var(--muted);}
+.btn-primary{display:inline-flex;align-items:center;gap:12px;background:var(--gold);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:18px 40px;border:none;cursor:pointer;transition:all 0.2s;animation:fadeUp 0.6s 0.38s ease both;}
+.btn-primary:hover{background:var(--cream);transform:translateY(-2px);}
+
+#quiz{padding:60px 0 80px;}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:52px;padding-bottom:18px;border-bottom:1px solid var(--gold-border);}
+.quiz-brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--gold);}
+.progress-wrap{display:flex;align-items:center;gap:14px;}
+.progress-text{font-size:9px;font-weight:600;letter-spacing:2px;color:var(--muted);}
+.progress-bar{width:100px;height:2px;background:rgba(255,255,255,0.06);}
+.progress-fill{height:100%;background:var(--gold);transition:width 0.4s ease;}
+.question-block{animation:fadeUp 0.45s ease both;}
+.q-number{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.q-section{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(201,165,90,0.5);margin-bottom:8px;}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,30px);font-weight:400;line-height:1.35;color:var(--white);margin-bottom:10px;}
+.q-subtext{font-size:12px;font-weight:300;color:var(--muted);margin-bottom:38px;line-height:1.65;}
+.options{display:flex;flex-direction:column;gap:10px;}
+.option{display:flex;align-items:flex-start;gap:18px;padding:20px 24px;border:1px solid var(--gold-border);background:var(--surface);cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.option::before{content:'';position:absolute;inset:0;background:var(--gold-dim);opacity:0;transition:opacity 0.2s;}
+.option:hover::before{opacity:1;}
+.option:hover{border-color:var(--gold);}
+.option.selected{border-color:var(--gold);background:var(--surface2);}
+.option.selected::before{opacity:1;}
+.option.selected .opt-letter{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.opt-letter{width:30px;height:30px;border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;transition:all 0.2s;}
+.opt-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px;line-height:1.4;}
+.opt-desc{font-size:11.5px;font-weight:300;color:var(--muted);line-height:1.55;}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:40px;}
+.btn-next{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 28px;border:none;cursor:pointer;transition:all 0.2s;opacity:0.25;pointer-events:none;}
+.btn-next.enabled{opacity:1;pointer-events:all;}
+.btn-next.enabled:hover{background:var(--cream);transform:translateY(-2px);}
+.btn-back{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color 0.2s;padding:0;}
+.btn-back:hover{color:var(--cream);}
+
+/* Section divider between podcast parts */
+.q-part-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.q-part-label{font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:rgba(201,165,90,0.4);}
+.q-part-line{flex:1;height:1px;background:rgba(201,165,90,0.15);}
+
+#result{padding:56px 0 100px;}
+.result-header{text-align:center;padding-bottom:48px;margin-bottom:48px;border-bottom:1px solid var(--gold-border);animation:fadeUp 0.6s ease both;}
+.result-eyebrow{font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.result-type-label{font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.result-type-name{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,7vw,58px);font-weight:700;color:var(--white);line-height:1.05;margin-bottom:14px;}
+.result-type-name .gold{color:var(--gold);}
+.result-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--muted);}
+
+.score-section{margin-bottom:44px;animation:fadeUp 0.6s 0.1s ease both;}
+.score-label{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.score-bars{display:flex;flex-direction:column;gap:13px;}
+.score-row{display:flex;align-items:center;gap:14px;}
+.score-name{font-size:10.5px;font-weight:400;color:var(--cream);width:210px;flex-shrink:0;}
+.score-track{flex:1;height:3px;background:rgba(255,255,255,0.05);}
+.score-bar{height:100%;background:var(--gold);width:0;transition:width 1s 0.4s ease;}
+.score-bar.dim{background:rgba(201,165,90,0.3);}
+.score-pct{font-size:10px;font-weight:600;color:var(--gold);width:32px;text-align:right;}
+
+/* Readiness signal */
+.readiness-signal{margin-bottom:44px;padding:24px 28px;border:1px solid var(--gold-border);background:var(--surface);animation:fadeUp 0.6s 0.14s ease both;}
+.rs-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.rs-signal{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--white);margin-bottom:8px;}
+.rs-desc{font-size:12px;font-weight:300;color:var(--muted);line-height:1.7;}
+
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px;animation:fadeUp 0.6s 0.18s ease both;}
+.profile-card{background:var(--surface);border:1px solid var(--gold-border);padding:24px 20px;}
+.profile-card.highlight{border-color:var(--gold);background:var(--surface2);position:relative;}
+.profile-card.highlight::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.profile-card-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:9px;}
+.profile-card-content{font-size:12px;font-weight:300;line-height:1.8;color:rgba(240,234,216,0.72);}
+.profile-card-content strong{color:var(--cream);font-weight:500;}
+
+/* Future self message */
+.future-self-msg{margin-bottom:44px;background:var(--surface2);border:1px solid var(--gold);padding:28px 32px;animation:fadeUp 0.6s 0.22s ease both;position:relative;}
+.future-self-msg::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.fsm-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.fsm-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;}
+.fsm-message{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:rgba(240,234,216,0.85);line-height:1.5;margin-bottom:10px;}
+.fsm-sub{font-size:11px;font-weight:300;color:var(--muted);line-height:1.65;}
+
+.shift-stages-result{margin-bottom:44px;animation:fadeUp 0.6s 0.26s ease both;}
+.ssr-label{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.ssr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ssr-item{padding:18px 20px;border:1px solid var(--gold-border);background:var(--surface);}
+.ssr-stage{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.ssr-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white);margin-bottom:7px;}
+.ssr-desc{font-size:11px;font-weight:300;color:var(--muted);line-height:1.65;}
+.ssr-note{font-size:11px;font-weight:300;color:var(--muted);margin-top:10px;line-height:1.65;font-style:italic;}
+
+.rewrite-result{margin-bottom:44px;background:var(--surface);border:1px solid var(--gold-border);padding:28px 32px;animation:fadeUp 0.6s 0.3s ease both;}
+.rr-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.rr-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--white);margin-bottom:10px;}
+.rr-desc{font-size:12px;font-weight:300;line-height:1.8;color:rgba(240,234,216,0.68);margin-bottom:14px;}
+.rr-pillars{display:flex;gap:20px;flex-wrap:wrap;}
+.rr-pillar{font-size:10px;font-weight:500;color:var(--gold);display:flex;align-items:center;gap:7px;}
+.rr-pillar::before{content:'';display:block;width:16px;height:1px;background:var(--gold);}
+
+.qs-result{margin-bottom:44px;background:var(--surface);border:1px solid var(--gold-border);padding:28px 32px;animation:fadeUp 0.6s 0.34s ease both;}
+.qsr-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.qsr-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--white);margin-bottom:5px;}
+.qsr-sub{font-size:10.5px;font-weight:300;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.qsr-questions{display:flex;flex-direction:column;gap:9px;}
+.qsr-q{padding:11px 15px;border-left:2px solid var(--gold);background:rgba(201,165,90,0.05);}
+.qsr-q-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:rgba(240,234,216,0.78);line-height:1.5;}
+
+.blindspots-result{margin-bottom:44px;animation:fadeUp 0.6s 0.38s ease both;}
+.bs-result-label{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.bs-tiers-result{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.bs-tier-title{font-size:7px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.bs-tags{display:flex;flex-direction:column;gap:5px;}
+.bs-tag{padding:8px 13px;border:1px solid var(--gold-border);font-size:10.5px;font-weight:300;color:var(--muted);}
+.bs-tag.active{border-color:var(--gold);color:var(--cream);background:var(--gold-dim);}
+
+.component-focus{background:var(--surface);border:1px solid var(--gold);padding:32px;margin-bottom:44px;position:relative;animation:fadeUp 0.6s 0.42s ease both;}
+.component-focus::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.cf-label{font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.cf-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--white);margin-bottom:12px;}
+.cf-desc{font-size:12.5px;font-weight:300;line-height:1.85;color:rgba(240,234,216,0.72);margin-bottom:20px;}
+.cf-pillars{display:flex;gap:18px;flex-wrap:wrap;}
+.cf-pillar{font-size:10px;font-weight:500;color:var(--gold);display:flex;align-items:center;gap:7px;}
+.cf-pillar::before{content:'';display:block;width:16px;height:1px;background:var(--gold);}
+
+/* Podcast recommendation */
+.podcast-rec{margin-bottom:44px;background:var(--surface);border:1px solid var(--gold-border);padding:28px 32px;animation:fadeUp 0.6s 0.46s ease both;}
+.pr-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.pr-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--white);margin-bottom:10px;}
+.pr-desc{font-size:12px;font-weight:300;line-height:1.8;color:rgba(240,234,216,0.65);margin-bottom:16px;}
+.pr-sessions{display:flex;flex-direction:column;gap:8px;}
+.pr-session{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:rgba(201,165,90,0.06);border-left:2px solid var(--gold);}
+.pr-session-num{font-size:8px;font-weight:600;letter-spacing:2px;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.pr-session-text{font-size:11.5px;font-weight:300;color:rgba(240,234,216,0.7);line-height:1.55;}
+.pr-session-text strong{color:var(--cream);font-weight:500;}
+
+.philosophy-box{text-align:center;padding:40px 32px;border:1px solid var(--gold-border);margin-bottom:44px;position:relative;animation:fadeUp 0.6s 0.5s ease both;}
+.philosophy-box::before,.philosophy-box::after{content:'';position:absolute;left:32px;right:32px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-border),transparent);}
+.philosophy-box::before{top:10px;}
+.philosophy-box::after{bottom:10px;}
+.phil-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:var(--white);line-height:1.5;margin-bottom:10px;}
+.phil-sub{font-size:10.5px;font-weight:300;color:var(--muted);line-height:1.7;}
+
+.result-cta{background:var(--gold);padding:44px 40px;text-align:center;animation:fadeUp 0.6s 0.54s ease both;}
+.cta-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:9px;line-height:1.25;}
+.cta-sub{font-size:12px;font-weight:300;color:rgba(18,17,15,0.62);margin-bottom:26px;line-height:1.75;max-width:440px;margin-left:auto;margin-right:auto;}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 32px;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.btn-cta:hover{background:var(--surface);transform:translateY(-2px);}
+.cta-note{font-size:9px;font-weight:300;color:rgba(18,17,15,0.42);margin-top:12px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.intro-meta{flex-wrap:wrap;gap:16px;}.profile-grid,.ssr-grid,.bs-tiers-result{grid-template-columns:1fr;}.score-name{width:130px;font-size:9.5px;}.result-cta{padding:32px 20px;}.cf-pillars,.rr-pillars{flex-direction:column;}}
+
+/* Email capture */
+.capture-card{border:1px solid var(--gold-border);background:var(--surface);padding:26px 26px;}
+.capture-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field{display:flex;flex-direction:column;gap:8px;}
+.field-label{font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(201,165,90,0.7);}
+.field-input{width:100%;padding:14px 14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s, box-shadow 0.2s;}
+.field-input::placeholder{color:rgba(240,234,216,0.35);}
+.field-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,165,90,0.12);}
+.capture-foot{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.capture-note{font-size:10.5px;font-weight:300;color:var(--muted);line-height:1.6;flex:1;min-width:220px;}
+@media(max-width:600px){.capture-grid{grid-template-columns:1fr;}.capture-card{padding:22px 18px;}.capture-foot{flex-direction:column;align-items:stretch;}.capture-note{min-width:unset;}}
+
+/* Toast */
+.toast-wrap{position:fixed;left:0;right:0;bottom:18px;display:flex;justify-content:center;pointer-events:none;z-index:9999;}
+.toast{pointer-events:auto;max-width:min(560px,calc(100vw - 32px));border:1px solid var(--gold-border);background:rgba(23,21,18,0.92);backdrop-filter:blur(10px);padding:12px 14px;display:flex;align-items:center;gap:12px;transform:translateY(18px);opacity:0;transition:opacity 0.2s ease, transform 0.2s ease;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast-dot{width:8px;height:8px;border-radius:999px;background:var(--gold);flex-shrink:0;}
+.toast.error .toast-dot{background:rgba(255,120,120,0.95);}
+.toast-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.toast.error .toast-title{color:rgba(255,170,170,0.95);}
+.toast-msg{font-size:11.5px;font-weight:300;color:rgba(240,234,216,0.78);line-height:1.55;}
+.toast-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.toast-btn{background:none;border:none;color:rgba(240,234,216,0.7);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:6px 8px;}
+.toast-btn:hover{color:var(--cream);}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="intro-eyebrow">Darren Tebbenham · BSc, MSc · The 2.0 Method</div>
+  <div class="intro-title">The <span class="gold">2.0</span><br>Profile</div>
+  <div class="intro-subtitle">Discover your pattern. Find your entry point.</div>
+  <div class="intro-desc">
+    Most people who struggle with weight are not lacking information, discipline, or willpower. They are running a psychological pattern that no plan has ever addressed.<br><br>
+    This assessment identifies <strong>which of the four patterns</strong> is driving your behaviour, <strong>which blind spots</strong> are keeping you stuck, and <strong>exactly where</strong> your transformation begins — through Clarity, Vision, and Focus.
+  </div>
+  <div class="intro-book-quote">
+    <div class="ibq-text">"Nothing about your past struggles with weight was a personal failure. You were never lazy. You were never weak. You were responding exactly as a human brain responds under pressure."</div>
+    <div class="ibq-source">From The Psychology of Weight Loss · Darren Tebbenham, BSc, MSc</div>
+  </div>
+  <div class="intro-meta">
+    <div class="meta-item"><div class="meta-label">Questions</div><div class="meta-value">13 questions</div></div>
+    <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">5–7 minutes</div></div>
+    <div class="meta-item"><div class="meta-label">Result</div><div class="meta-value">Your full 2.0 Profile</div></div>
+  </div>
+  <button class="btn-primary" onclick="startQuiz()">Begin Your Profile →</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="quiz-header">
+    <div class="quiz-brand">The 2.0 Profile</div>
+    <div class="progress-wrap">
+      <div class="progress-text" id="progress-text">1 / 13</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:8%"></div></div>
+    </div>
+  </div>
+  <div id="question-container"></div>
+</div>
+
+<!-- EMAIL CAPTURE -->
+<div id="email-capture" class="screen">
+  <div class="quiz-header">
+    <div class="quiz-brand">The 2.0 Profile</div>
+    <div class="progress-wrap">
+      <div class="progress-text">Complete</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="question-block">
+    <div class="q-number">Almost there</div>
+    <div class="q-text">Where should we send your profile?</div>
+    <div class="q-subtext">Enter your details to view your results and get the right resources for your pattern.</div>
+
+    <div class="capture-card">
+      <div class="capture-grid">
+        <label class="field">
+          <span class="field-label">First name</span>
+          <input id="capture-first-name" class="field-input" type="text" autocomplete="given-name" inputmode="text" placeholder="First name">
+        </label>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input id="capture-email" class="field-input" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com">
+        </label>
+      </div>
+      <div class="capture-foot">
+        <div class="capture-note" id="capture-note">We’ll only use this to send your profile and relevant updates. You can unsubscribe anytime.</div>
+        <button class="btn-next enabled" id="capture-submit" onclick="submitEmailCapture()">Show My Profile →</button>
+      </div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn-back" onclick="backToLastQuestion()">← Back</button>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="result-header">
+    <div class="result-eyebrow" id="result-eyebrow">Your 2.0 Profile</div>
+    <div class="result-type-label">Your Primary Pattern</div>
+    <div class="result-type-name" id="result-type-name"></div>
+    <div class="result-tagline" id="result-tagline"></div>
+  </div>
+  <div class="score-section"><div class="score-label">Pattern Breakdown</div><div class="score-bars" id="score-bars"></div></div>
+  <div class="readiness-signal" id="readiness-signal"></div>
+  <div class="profile-grid" id="profile-grid"></div>
+  <div class="future-self-msg" id="future-self-msg"></div>
+  <div class="shift-stages-result" id="shift-stages-result"></div>
+  <div class="rewrite-result">
+    <div class="rr-label">Component Four · The Bridge to Permanence</div>
+    <div class="rr-title">The Rewrite</div>
+    <div class="rr-desc">Once The Shift has happened, The Rewrite embeds the change at the level of the automatic brain — converting You 2.0 from a vision into a habit, from an intention into an identity. This is where easy and effortless is actually built. And where it stays.</div>
+    <div class="rr-pillars">
+      <div class="rr-pillar">Identity evidence — collecting proof of You 2.0</div>
+      <div class="rr-pillar">Habit anchors — one non-negotiable at a time</div>
+      <div class="rr-pillar">Continuity over perfection — always</div>
+    </div>
+  </div>
+  <div class="qs-result">
+    <div class="qsr-label">Within The Shift · Your Coaching Tools</div>
+    <div class="qsr-title">The Question Stack</div>
+    <div class="qsr-sub">Four questions used at the right moment in the coaching work. Each one dismantles a layer of the pattern that no plan has ever reached.</div>
+    <div class="qsr-questions">
+      <div class="qsr-q"><div class="qsr-q-text">"What meaning are you giving this — to give it the power it has?"</div></div>
+      <div class="qsr-q"><div class="qsr-q-text">"Imagine walking in the footsteps of your future self. How would they tackle this?"</div></div>
+      <div class="qsr-q"><div class="qsr-q-text">"Looking back as You 2.0 — someone who has already solved this — how did you do it?"</div></div>
+      <div class="qsr-q"><div class="qsr-q-text">"There is no reality, only perception. What story are you telling — and what would change if you told a better one?"</div></div>
+    </div>
+  </div>
+  <div class="blindspots-result"><div class="bs-result-label">Your Blind Spots</div><div class="bs-tiers-result" id="bs-tiers-result"></div></div>
+  <div class="component-focus" id="component-focus"></div>
+  <div class="podcast-rec" id="podcast-rec"></div>
+  <div class="philosophy-box">
+    <div class="phil-quote">"Be before you are, and you shall become."</div>
+    <div class="phil-sub">You 2.0 isn't a new you. It's the real you — back. The moment you stop fighting yourself is the moment everything changes. That moment starts here.</div>
+  </div>
+  <div class="result-cta">
+    <div class="cta-title">Ready to become You 2.0?</div>
+    <div class="cta-sub">Your profile is your map. The next step is a free 30-minute diagnostic call with Darren — clarity on exactly what's driving your pattern, and whether the 2.0 Method is the right fit.</div>
+    <a href="https://www.dt.coach" class="btn-cta">Book Your Diagnostic Call →</a>
+    <div class="cta-note">No obligation. No pitch. Just clarity.</div>
+  </div>
+</div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toast-wrap" aria-live="polite" aria-atomic="true" style="display:none;">
+  <div class="toast" id="toast">
+    <div class="toast-dot"></div>
+    <div class="toast-body">
+      <div class="toast-title" id="toast-title"></div>
+      <div class="toast-msg" id="toast-msg"></div>
+    </div>
+    <div class="toast-actions">
+      <button class="toast-btn" onclick="hideToast()">Dismiss</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// N=Perpetual Negotiator, R=Resilient Restarter, W=Weekday Warrior, C=Clean Slater
+// blind: S=surface D=deep, number=index
+// readiness: W=wanting, D=deciding
+// futureself: N/R/W/C = which message they chose
+
+const questions=[
+  // CLARITY SECTION (Q1-5)
+  {id:1,section:"Part 1 · Clarity",
+   text:"When your motivation disappears — as it always does at some point — what tends to happen?",
+   subtext:"Motivation is emotional and unreliable. What you do without it reveals the pattern.",
+   options:[
+    {letter:'A',title:"I lose momentum and wait for motivation to return",desc:"Progress stalls until I feel ready again. Without motivation, starting feels impossible.",type:'N',blind:'S1'},
+    {letter:'B',title:"I push harder using willpower until I burn out",desc:"I try to force my way through it. Eventually the effort becomes unsustainable and I crash.",type:'R'},
+    {letter:'C',title:"I maintain the structure but struggle when structure goes",desc:"On structured days I'm fine. When motivation and structure both disappear, so does the behaviour.",type:'W'},
+    {letter:'D',title:"I restart when motivation returns — each time feels like a new beginning",desc:"The return of motivation triggers a fresh start. The cycle of motivation, effort, and collapse repeats.",type:'C'}
+  ]},
+  {id:2,section:"Part 1 · Clarity",
+   text:"Which of these sentences sounds most like something you've said or thought about yourself?",
+   subtext:"The story you tell about yourself is the most powerful driver of the pattern.",
+   options:[
+    {letter:'A',title:"'I'm someone who always finds a reason not to fully commit'",desc:"I know the pattern. I see myself doing it. And I do it anyway.",type:'N',blind:'D2'},
+    {letter:'B',title:"'I'm someone who tries hard but just can't make it stick'",desc:"The effort is real. The results don't last. I don't understand why.",type:'R',blind:'D2'},
+    {letter:'C',title:"'I'm someone who is great at this when life cooperates'",desc:"When conditions are right, I'm exemplary. When they're not, I'm not.",type:'W'},
+    {letter:'D',title:"'I'm someone who needs everything to be right before I can really go for it'",desc:"I know I could do this if I could just get a clean run at it.",type:'C',blind:'D2'}
+  ]},
+  {id:3,section:"Part 1 · Clarity",
+   text:"When someone suggests your struggle has nothing to do with willpower — that it's psychological — what's your honest reaction?",
+   subtext:"Your openness to this idea is a direct measure of your readiness for the work.",
+   options:[
+    {letter:'A',title:"I accept it intellectually but don't really feel it",desc:"It makes sense in theory. But in practice I still reach for more effort as the answer.",type:'N'},
+    {letter:'B',title:"I resist it — I still believe trying harder is the answer",desc:"If I could just stay consistent enough, long enough, this would work. That's still my belief.",type:'R',blind:'D2'},
+    {letter:'C',title:"I believe it on good days, not on bad ones",desc:"When things are going well, the psychological framing makes sense. When they're not, I revert.",type:'W'},
+    {letter:'D',title:"I accept the idea but I'm not sure I'm ready to do the deeper work",desc:"I understand it's psychological. Going into that layer feels uncomfortable or unnecessary.",type:'C',blind:'D2'}
+  ]},
+  {id:4,section:"Part 1 · Clarity",
+   text:"How would you describe your inner voice when things aren't going to plan with your health?",
+   subtext:"Self-talk is the hidden narrator running the whole pattern — before you even realise it.",
+   options:[
+    {letter:'A',title:"Justifying and bargaining",desc:"It constructs very convincing cases for why this time is different, why the exception makes sense.",type:'N',blind:'S2'},
+    {letter:'B',title:"Harsh and self-critical",desc:"It tells me I've failed, I'm weak, I should know better. The language is severe and personal.",type:'R',blind:'D2'},
+    {letter:'C',title:"Resigned when structure goes",desc:"'You knew this would happen at the weekend.' A kind of inevitability that becomes self-fulfilling.",type:'W'},
+    {letter:'D',title:"All-or-nothing and absolutist",desc:"'If you can't do this properly, don't do it at all.' It demands perfection or nothing.",type:'C',blind:'D2'}
+  ]},
+  {id:5,section:"Part 1 · Clarity",
+   text:"When things go wrong — stress, a bad week, an emotional setback — what role does food play?",
+   subtext:"How food is used under pressure reveals the deepest layer of the pattern.",
+   options:[
+    {letter:'A',title:"Food becomes a reward for managing the stress",desc:"I've earned it. I'm dealing with a lot. The food is framed as deserved comfort, not avoidance.",type:'N',blind:'D3'},
+    {letter:'B',title:"Food becomes part of the collapse",desc:"Once I've slipped, the eating tends to spiral. Self-criticism and eating feed each other.",type:'R',blind:'D3'},
+    {letter:'C',title:"Food becomes unstructured and reactive",desc:"Without the weekday routine, eating becomes automatic. I'm not choosing — I'm just responding.",type:'W'},
+    {letter:'D',title:"Food becomes the reward for surviving imperfection",desc:"Having dealt with things being broken and messy, food feels like the one reliable thing.",type:'C',blind:'D3'}
+  ]},
+  // VISION SECTION (Q6-9)
+  {id:6,section:"Part 2 · Vision",
+   text:"If the version of you who has completely solved this could send you one message right now — what would it say?",
+   subtext:"Your answer reveals where you are in the journey from wanting to becoming.",
+   options:[
+    {letter:'A',title:"'Stop waiting for the right moment. The moment is now.'",desc:"You already know this. The conditions will never be perfect. The decision is the condition.",type:'N',futureself:'N'},
+    {letter:'B',title:"'Stop restarting. Just keep going.'",desc:"The restarts aren't the problem. The collapse that precedes them is. Continuity is the work.",type:'R',futureself:'R'},
+    {letter:'C',title:"'It works on weekends too. Trust the process.'",desc:"The person you become on Tuesday is the same person on Saturday. Identity doesn't clock off.",type:'W',futureself:'W'},
+    {letter:'D',title:"'Imperfect progress is still progress. Let go of perfect.'",desc:"The clean slate isn't coming. And you don't need it. You just need to keep going.",type:'C',futureself:'C'}
+  ]},
+  {id:7,section:"Part 2 · Vision",
+   text:"When you imagine You 2.0 — the version of you who has genuinely solved this — how vivid and believable is that image?",
+   subtext:"This is Stage 2 of The Shift — The Vision. How close is it?",
+   options:[
+    {letter:'A',title:"Possible but conditional — real when circumstances are right",desc:"On good days the image is clear. It feels contingent on things changing externally first.",type:'N'},
+    {letter:'B',title:"Familiar — I've been there before but it doesn't feel permanent",desc:"The transformed version of me has existed briefly. I just can't seem to make it last.",type:'R'},
+    {letter:'C',title:"Clear on weekdays, blurry at weekends and under stress",desc:"Vividly healthy from Monday to Friday. The full seven-day version feels out of reach.",type:'W'},
+    {letter:'D',title:"Only vivid when everything is in order",desc:"The image exists when life feels under control. The moment things get messy, it disappears.",type:'C'}
+  ]},
+  {id:8,section:"Part 2 · Vision",
+   text:"How would you complete this sentence: 'I'll really commit to this properly when...'",
+   subtext:"Almost everyone has a version of this sentence. What's yours?",
+   options:[
+    {letter:'A',title:"...this busy period is over and I have more headspace",desc:"Work settles down, the project ends, life calms down. Then I'll have the space to focus.",type:'N',blind:'S3'},
+    {letter:'B',title:"...I find a way to stay consistent without relying on motivation",desc:"I know motivation isn't reliable. I just haven't found what replaces it yet.",type:'R',blind:'S1'},
+    {letter:'C',title:"...I crack the weekend problem",desc:"Everything else is working. Solving weekends would solve everything.",type:'W'},
+    {letter:'D',title:"...I can get a clean run without disruptions",desc:"I need conditions to be right before I can build the habit properly.",type:'C',blind:'S1'}
+  ]},
+  {id:9,section:"Part 2 · Vision",
+   text:"When you think about making yourself your own priority — genuinely, not just in principle — what comes up?",
+   subtext:"This is The Code. Being your own priority is the first commitment — and the hardest.",
+   options:[
+    {letter:'A',title:"It feels selfish or uncomfortable",desc:"I know I should. But everyone else's needs tend to take over, and I use that as cover.",type:'N',blind:'S3'},
+    {letter:'B',title:"I want to but I keep deprioritising myself after setbacks",desc:"After a collapse, I find it hard to reinvest in myself. The shame gets in the way.",type:'R',blind:'D2'},
+    {letter:'C',title:"I do prioritise myself — but only on structured days",desc:"During the week I show up for myself. At weekends I tend to put myself last.",type:'W'},
+    {letter:'D',title:"I only feel I deserve it when I'm doing it perfectly",desc:"Being my own priority feels conditional on performing well. When I fail, I withdraw it.",type:'C',blind:'D2'}
+  ]},
+  // FOCUS SECTION (Q10-13)
+  {id:10,section:"Part 3 · Focus",
+   text:"When you think about the long game — not a 6-week programme but a permanent shift — what's your honest reaction?",
+   subtext:"The long game requires a different relationship with progress than most programmes offer.",
+   options:[
+    {letter:'A',title:"It sounds right but I struggle to stay engaged without short-term wins",desc:"I need to see results quickly to stay connected. The long game loses me without milestones.",type:'N'},
+    {letter:'B',title:"I believe in it but I keep getting pulled back into restart cycles",desc:"I know consistency over time is the answer. I just can't seem to stay in the game long enough.",type:'R'},
+    {letter:'C',title:"I can do the long game on weekdays — weekends break the continuity",desc:"If I could make it seven days a week instead of five, the long game would work.",type:'W'},
+    {letter:'D',title:"The long game only feels possible after a perfect start",desc:"I need a clean foundation before I can think about sustained commitment.",type:'C',blind:'S1'}
+  ]},
+  {id:11,section:"Part 3 · Focus",
+   text:"How do you respond when you notice a small win — a good choice, a day well lived, a moment of alignment with You 2.0?",
+   subtext:"How you receive progress is as important as how you make it.",
+   options:[
+    {letter:'A',title:"I acknowledge it but immediately focus on what still needs to change",desc:"The win registers briefly. Then I move on to the gap between where I am and where I want to be.",type:'N'},
+    {letter:'B',title:"I feel good briefly then worry it won't last",desc:"The win is real but it comes with anxiety. I've been here before and it hasn't held.",type:'R',blind:'D2'},
+    {letter:'C',title:"Small weekday wins feel solid — they just don't transfer to weekends",desc:"Monday's win feels earned. Friday's feels fragile. By Sunday it can feel like it never happened.",type:'W'},
+    {letter:'D',title:"I discount it if it came alongside any imperfection",desc:"A win that came during an imperfect day doesn't count as a real win. The whole day has to be right.",type:'C',blind:'D2'}
+  ]},
+  {id:12,section:"Part 3 · Focus",
+   text:"Think about the patterns we've uncovered in this assessment. Which of these comes closest to your hidden belief about change?",
+   subtext:"Hidden beliefs are the most powerful drivers of the pattern — and the most important to surface.",
+   options:[
+    {letter:'A',title:"'I could change — I just need to want it enough at the right moment'",desc:"The change is available. The right wave of motivation just hasn't been sustained long enough.",type:'N',blind:'S1'},
+    {letter:'B',title:"'I know what change looks like — I've done it. I just can't seem to hold it'",desc:"The experience of changing exists in my history. Sustaining it is the unsolved problem.",type:'R'},
+    {letter:'C',title:"'Change is possible for me — but it requires perfect conditions'",desc:"I can change. The environment has to cooperate. Without structure, I revert.",type:'W'},
+    {letter:'D',title:"'Change requires a version of me that hasn't made any mistakes yet'",desc:"I need a clean slate — a version of me that hasn't failed — before real change is possible.",type:'C',blind:'D2'}
+  ]},
+  {id:13,section:"Part 3 · Focus",
+   text:"Be completely honest. Right now — where are you?",
+   subtext:"The distance between wanting and deciding is the entire work. This question is the most important one.",
+   options:[
+    {letter:'A',title:"I want this — but I'm still waiting for the right moment to decide",desc:"The desire is real. The decision keeps being deferred to a better time.",type:'N',readiness:'W'},
+    {letter:'B',title:"I've decided before — I'm deciding again — I know what to do",desc:"The decision is made. The pattern of collapse and restart is the thing that needs to change.",type:'R',readiness:'W'},
+    {letter:'C',title:"I'm ready to decide — but I need to understand why I keep failing first",desc:"Before I commit again, I need clarity on what's been driving the pattern. Then I'll decide.",type:'W',readiness:'W'},
+    {letter:'D',title:"I'm done waiting. I'm deciding now — imperfect conditions and all",desc:"No more waiting for perfect. No more clean slates. The decision is made right here.",type:'C',readiness:'D'}
+  ]}
+];
+
+const typeData={
+  N:{
+    name:"The Perpetual Negotiator",goldPart:"Perpetual",restPart:" Negotiator",
+    tagline:"Capable, self-aware — and always one exception away from commitment.",
+    whatThisMeans:"You are intelligent enough to construct a convincing case for almost any exception. The negotiation isn't weakness — it's a sophisticated protective strategy that keeps you safe from the risk of full commitment. Full commitment feels dangerous because if you fully commit and still don't succeed, that feels definitive. So you keep one foot out. The story you tell — 'I'm someone who always finds a reason not to commit' — is the pattern running as identity.",
+    theWork:"Your entry point is <strong>The Code</strong> — the shift from doing this for external reasons to owning it as a personal standard. The bargaining ends not through discipline but through a decision about who you are. The work begins in <strong>Clarity</strong> — surfacing the story, the self-talk, and the perspective that keep the negotiation alive.",
+    shiftNote:"For you, Stage 1 of The Shift — <strong>The Mirror</strong> — is where the critical work begins. Seeing the repeating pattern of negotiation clearly, without the usual defence, is the moment that changes everything.",
+    futureMessage:"Stop waiting for the right moment. The moment is now.",
+    readinessWanting:"Your profile suggests you're at the <strong>wanting stage</strong> — the desire is real, but the decision keeps being deferred. The diagnostic call will help move you from wanting to deciding.",
+    readinessDeciding:"Something in you has already decided. The diagnostic call is about building the right structure around that decision.",
+    podcastRec:{
+      title:"Start with Part 1 — Clarity",
+      desc:"Before the diagnostic call, these sessions will do the most useful work for your pattern:",
+      sessions:[
+        {num:"Session 3",text:"<strong>Your Stories</strong> — the narrative you've built about yourself and your relationship with commitment"},
+        {num:"Session 4",text:"<strong>Your Self-Talk</strong> — identifying the negotiating voice and learning to work with it"},
+        {num:"Session 5",text:"<strong>Your Perspective</strong> — how the meaning you give to things is giving them their power"}
+      ]
+    },
+    component:{label:"Your Entry Point",name:"The Code",desc:"The Code installs three internal commitments that make everything else possible. For you, the critical shift is from external motivation to internal standard — from 'I should do this' to 'this is who I am.' The negotiation stops when commitment becomes identity, not intention.",pillars:["Be your own priority","Do what you say","Be resourceful"]}
+  },
+  R:{
+    name:"The Resilient Restarter",goldPart:"Resilient",restPart:" Restarter",
+    tagline:"Strong, determined — and using the wrong tool for this job.",
+    whatThisMeans:"You have genuine resilience. You keep coming back, keep believing it's possible, keep starting again. That quality is real and it matters. The problem is that willpower — the tool you've been relying on — cannot fix a pattern that lives below the level of conscious intention. The story you tell — 'I try hard but it just won't stick' — is the most common story in weight loss. And it's the one that keeps the restart cycle running.",
+    theWork:"Your entry point is <strong>The Shift</strong> — moving from willpower-driven effort to identity-driven consistency. The visualisation work — vividly seeing and feeling You 2.0 — is the mechanism that replaces the willpower cycle with something that doesn't deplete. Progress isn't lost in the slip. It's lost in the story told afterwards.",
+    shiftNote:"Both stages of The Shift matter equally for you. <strong>Stage 1 — The Mirror</strong> shows the restart pattern in full. <strong>Stage 2 — The Vision</strong> replaces it with a vivid, believable image of You 2.0 that the brain begins to treat as real.",
+    futureMessage:"Stop restarting. Just keep going.",
+    readinessWanting:"Your profile suggests you're still at the <strong>wanting stage</strong> — the decision gets made and then remade each time. The diagnostic call will help you understand what's driving the collapse so the decision can finally hold.",
+    readinessDeciding:"You've decided. The diagnostic call is about understanding why the pattern has persisted despite genuine commitment — and what changes that.",
+    podcastRec:{
+      title:"Start with Part 1 and Part 2 — Clarity then Vision",
+      desc:"These sessions are most directly relevant to your pattern:",
+      sessions:[
+        {num:"Session 1",text:"<strong>Your Motivation</strong> — the distinction between motivation and commitment, and why one runs out"},
+        {num:"Session 4",text:"<strong>Your Self-Talk</strong> — the harsh inner critic that follows every collapse and fuels the next one"},
+        {num:"Part 2, Session 3",text:"<strong>Your Future Self 2.0 Defined</strong> — building the vision vivid enough to sustain you through setbacks"}
+      ]
+    },
+    component:{label:"Your Entry Point",name:"The Shift",desc:"The Shift is the transformation at the heart of the 2.0 Method. For you, this means moving from willpower-driven effort to identity-driven consistency. The work includes visualisation meditations, the Question Stack, and direct confrontation of the self-talk that follows every collapse.",pillars:["Stage 1 — The Mirror: seeing the pattern","Stage 2 — The Vision: believing You 2.0","Visualisation meditations as the mechanism"]}
+  },
+  W:{
+    name:"The Weekday Warrior",goldPart:"Weekday",restPart:" Warrior",
+    tagline:"Disciplined in structure — undone by its absence.",
+    whatThisMeans:"You have proven capability. Monday to Friday you are often exemplary. The problem is that the plan relies on the environment rather than being embedded in who you are. The story — 'I'm great when life cooperates' — reveals that health is still something you do rather than someone you are. When the structured environment disappears, the behaviour disappears with it.",
+    theWork:"Your entry point is <strong>The Switch</strong> — building a biological foundation that doesn't require perfect circumstances. Then <strong>The Rewrite</strong> embeds health as identity across all seven days. The long game is the work: building continuity not through more structure but through a different relationship with who you are.",
+    shiftNote:"For you, <strong>Stage 2 of The Shift — The Vision</strong> is particularly important. Seeing You 2.0 as someone whose health is consistent across all seven days gives your brain a target that your current environment-dependent pattern cannot reach alone.",
+    futureMessage:"It works on weekends too. Trust the process.",
+    readinessWanting:"Your profile suggests you're at the <strong>wanting stage</strong> — you know what works, you just haven't solved the conditions problem yet. The diagnostic call will help identify what's actually driving the weekend pattern.",
+    readinessDeciding:"You've decided. The diagnostic call is about building the biological and identity foundation that makes the decision hold beyond Friday.",
+    podcastRec:{
+      title:"Start with Part 3 — Focus",
+      desc:"Your pattern is most directly addressed in the Focus sessions:",
+      sessions:[
+        {num:"Session 1",text:"<strong>The Long Game</strong> — building consistency that works across all seven days, not just the structured ones"},
+        {num:"Session 2",text:"<strong>New Stories and Priorities</strong> — replacing 'I'm great when life cooperates' with a story that holds under pressure"},
+        {num:"Session 4",text:"<strong>Your Declaration of Intent</strong> — a behavioural contract that exists independently of circumstances"}
+      ]
+    },
+    component:{label:"Your Entry Point",name:"The Switch + The Rewrite",desc:"The Switch converts your body from carbohydrate dependency to fat-burning efficiency. When energy stabilises through insulin control and nourishment, the environmental triggers that derail your weekends lose their power. The Rewrite then installs health as identity — so you stop relying on structure because you stop needing it.",pillars:["Control insulin — unlock fat fuel","Nourishment not deprivation — seven days","The Rewrite: health embedded in identity"]}
+  },
+  C:{
+    name:"The Clean Slater",goldPart:"Clean",restPart:" Slater",
+    tagline:"Committed to perfection — undone by the first imperfection.",
+    whatThisMeans:"You commit with genuine intensity. The problem isn't effort — it's the standard attached to effort. Perfection or nothing means a single slip doesn't just break the day; it breaks the entire attempt. The story — 'I need everything to be right before I can really go for it' — is the pattern running as logic. And underneath it is a refusal to go deeper, because that would mean admitting the problem is more than timing or willpower.",
+    theWork:"Your entry point is <strong>The Code and The Shift together</strong>. The Code replaces the perfectionism standard with a sustainable one. The Shift — particularly Stage 1, The Mirror — surfaces the clean slate pattern and the denial underneath it. The key insight: <em>imperfect progress is still progress.</em>",
+    shiftNote:"For you, <strong>Stage 1 of The Shift — The Mirror</strong> is the critical and most challenging stage. Seeing the clean slate pattern clearly — including the denial that it's a psychological issue — is the work that everything else depends on.",
+    futureMessage:"Imperfect progress is still progress. Let go of perfect.",
+    readinessWanting:"Your profile suggests you're still waiting for the right conditions to decide. The diagnostic call will help you understand that the conditions you're waiting for are created by the decision, not the other way around.",
+    readinessDeciding:"Something has shifted. The diagnostic call will help channel that decision into the right structure — one that doesn't require perfection to hold.",
+    podcastRec:{
+      title:"Start with Part 1 — Clarity, then Part 2 — Vision",
+      desc:"These sessions are most directly relevant to your pattern:",
+      sessions:[
+        {num:"Session 2",text:"<strong>Your Truth</strong> — objectively getting real with where you are, without the perfectionism filter"},
+        {num:"Session 3",text:"<strong>Your Stories</strong> — the 'I need a clean run' narrative and where it actually comes from"},
+        {num:"Part 2, Session 5",text:"<strong>Your Letter from Your Future Self</strong> — a message from You 2.0 who got there imperfectly"}
+      ]
+    },
+    component:{label:"Your Entry Point",name:"The Code + The Shift",desc:"You need both. The Code replaces the perfectionism standard with a sustainable one — do what you say, not do it perfectly. The Shift dismantles the pattern of denial and surfaces what's actually driving the clean slate cycle. Together they install the foundation that makes imperfect progress not just acceptable but the whole point.",pillars:["The Code: replace perfection with consistency","The Shift Stage 1: see the pattern without defence","'Imperfect progress is still progress'"]}
+  }
+};
+
+const surfaceBlindSpots=["Expecting transformation from minimal effort","Ready-made excuses — loaded before the situation arrives","Externalising blame — real reasons used to remove agency"];
+const deepBlindSpots=["Self-talk as the hidden narrator running the pattern","Barriers interpreted as permanent character flaws","Using food to cope — conditioning, not weakness"];
+
+let current=0,answers=[],scores={N:0,R:0,W:0,C:0},blindspots={surface:new Set(),deep:new Set()},futureSelf='',readiness='W';
+let pendingPrimary=null;
+let capturedFirstName='';
+let capturedEmail='';
+
+const BACKEND_BASE_URL='https://dt-coach-backend.onrender.com';
+
+const MAILERLITE_ENDPOINTS=(()=>{
+  return [
+    `${BACKEND_BASE_URL.replace(/\/+$/,'')}/api/subscribe`,
+  ];
+})();
+
+function startQuiz(){document.getElementById('intro').classList.remove('active');document.getElementById('quiz').classList.add('active');renderQuestion();}
+
+function renderQuestion(){
+  const q=questions[current];
+  const pct=Math.round(((current+1)/questions.length)*100);
+  document.getElementById('progress-text').textContent=`${current+1} / ${questions.length}`;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  const prevSection=current>0?questions[current-1].section:'';
+  const showDivider=q.section!==prevSection&&current>0;
+  const c=document.getElementById('question-container');
+  c.innerHTML=`
+    <div class="question-block">
+      ${showDivider?`<div class="q-part-divider"><div class="q-part-line"></div><div class="q-part-label">${q.section}</div><div class="q-part-line"></div></div>`:''}
+      <div class="q-number">Question ${String(current+1).padStart(2,'0')}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-subtext">${q.subtext}</div>
+      <div class="options">
+        ${q.options.map((o,i)=>`
+          <div class="option" data-index="${i}" onclick="selectOption(${i})">
+            <div class="opt-letter">${o.letter}</div>
+            <div class="opt-content">
+              <div class="opt-title">${o.title}</div>
+              <div class="opt-desc">${o.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-back" onclick="goBack()" ${current===0?'style="visibility:hidden"':''}>← Back</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">${current===questions.length-1?'See My Profile':'Next'} →</button>
+      </div>
+    </div>`;
+  if(answers[current]!==undefined){document.querySelectorAll('.option')[answers[current]].classList.add('selected');document.getElementById('btn-next').classList.add('enabled');}
+}
+
+function selectOption(i){document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));document.querySelectorAll('.option')[i].classList.add('selected');answers[current]=i;document.getElementById('btn-next').classList.add('enabled');}
+function nextQuestion(){
+  if(answers[current]===undefined)return;
+  const isLast=current===questions.length-1;
+  if(isLast){
+    pendingPrimary=calculateResult();
+    showEmailCapture();
+    return;
+  }
+  current++;
+  renderQuestion();
+}
+function goBack(){if(current>0){current--;renderQuestion();}}
+
+function calculateResult(){
+  scores={N:0,R:0,W:0,C:0};blindspots={surface:new Set(),deep:new Set()};futureSelf='';readiness='W';
+  questions.forEach((q,qi)=>{
+    const ai=answers[qi];if(ai===undefined)return;
+    const o=q.options[ai];
+    if(o.type&&scores[o.type]!==undefined)scores[o.type]++;
+    if(o.blind){const tier=o.blind[0];const num=parseInt(o.blind[1])-1;if(tier==='S')blindspots.surface.add(num);if(tier==='D')blindspots.deep.add(num);}
+    if(o.futureself)futureSelf=o.futureself;
+    if(o.readiness)readiness=o.readiness;
+  });
+  let primary='R',max=0;
+  Object.entries(scores).forEach(([k,v])=>{if(v>max){max=v;primary=k;}});
+  if(blindspots.surface.size===0)blindspots.surface.add(0);
+  if(blindspots.deep.size===0)blindspots.deep.add(1);
+  return primary;
+}
+
+function showEmailCapture(){
+  document.getElementById('quiz').classList.remove('active');
+  document.getElementById('email-capture').classList.add('active');
+  window.scrollTo(0,0);
+  const fn=document.getElementById('capture-first-name');
+  const em=document.getElementById('capture-email');
+  fn.value=capturedFirstName||'';
+  em.value=capturedEmail||'';
+  setTimeout(()=>fn.focus(),80);
+}
+
+function backToLastQuestion(){
+  document.getElementById('email-capture').classList.remove('active');
+  document.getElementById('quiz').classList.add('active');
+  window.scrollTo(0,0);
+  renderQuestion();
+}
+
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email||'').trim());
+}
+
+let toastTimer=null;
+function showToast({title,message,variant='success',durationMs=4200}){
+  const wrap=document.getElementById('toast-wrap');
+  const toast=document.getElementById('toast');
+  document.getElementById('toast-title').textContent=title||'';
+  document.getElementById('toast-msg').textContent=message||'';
+  toast.classList.toggle('error',variant==='error');
+  wrap.style.display='flex';
+  // force reflow to ensure transition plays
+  void toast.offsetHeight;
+  toast.classList.add('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>hideToast(),durationMs);
+}
+function hideToast(){
+  const wrap=document.getElementById('toast-wrap');
+  const toast=document.getElementById('toast');
+  toast.classList.remove('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=null;
+  setTimeout(()=>{wrap.style.display='none';},220);
+}
+
+function submitEmailCapture(){
+  const fn=(document.getElementById('capture-first-name').value||'').trim();
+  const em=(document.getElementById('capture-email').value||'').trim();
+  const note=document.getElementById('capture-note');
+  const btn=document.getElementById('capture-submit');
+
+  if(!fn){
+    note.textContent='Please enter your first name.';
+    return;
+  }
+  if(!isValidEmail(em)){
+    note.textContent='Please enter a valid email address.';
+    return;
+  }
+  capturedFirstName=fn;
+  capturedEmail=em;
+  note.textContent='Saving your details...';
+  const prevBtnText=btn.textContent;
+  btn.textContent='Saving...';
+  btn.disabled=true;
+  btn.style.pointerEvents='none';
+
+  // Show results immediately (MailerLite can fail without blocking results).
+  document.getElementById('email-capture').classList.remove('active');
+  showResult(pendingPrimary||'R');
+
+  // Fire-and-forget subscribe call.
+  subscribeToMailerLite({
+    firstName: capturedFirstName,
+    email: capturedEmail,
+    resultType: pendingPrimary||'R'
+  }).then((ok)=>{
+    if(ok){
+      showToast({
+        title:'Saved',
+        message:'Your details were saved successfully.'
+      });
+    }else{
+      showToast({
+        title:'Could not save',
+        message:'Your results are still ready, but saving your email failed. Please try again later.',
+        variant:'error',
+        durationMs:6000
+      });
+    }
+  }).finally(()=>{
+    note.textContent='We’ll only use this to send your profile and relevant updates. You can unsubscribe anytime.';
+    btn.textContent=prevBtnText;
+    btn.disabled=false;
+    btn.style.pointerEvents='';
+  });
+}
+
+async function subscribeToMailerLite(payload){
+  for(const url of MAILERLITE_ENDPOINTS){
+    try{
+      const res=await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      if(res.ok) return true;
+    }catch(e){
+      // try next endpoint
+    }
+  }
+  return false;
+}
+
+function showResult(primary){
+  document.getElementById('quiz').classList.remove('active');
+  document.getElementById('email-capture').classList.remove('active');
+  document.getElementById('result').classList.add('active');
+  window.scrollTo(0,0);
+  const td=typeData[primary];
+  const total=scores.N+scores.R+scores.W+scores.C||1;
+
+  const eyebrow=document.getElementById('result-eyebrow');
+  eyebrow.textContent=capturedFirstName?`${capturedFirstName}, your 2.0 Profile is ready`:'Your 2.0 Profile';
+  document.getElementById('result-type-name').innerHTML=`<span class="gold">${td.goldPart}</span>${td.restPart}`;
+  document.getElementById('result-tagline').textContent=td.tagline;
+
+  // Score bars
+  const types=[{name:'The Perpetual Negotiator',k:'N'},{name:'The Resilient Restarter',k:'R'},{name:'The Weekday Warrior',k:'W'},{name:'The Clean Slater',k:'C'}];
+  document.getElementById('score-bars').innerHTML=types.map(t=>{const pct=Math.round((scores[t.k]/total)*100);return`<div class="score-row"><div class="score-name">${t.name}</div><div class="score-track"><div class="score-bar${t.k===primary?'':' dim'}" data-pct="${pct}"></div></div><div class="score-pct">${pct}%</div></div>`;}).join('');
+  setTimeout(()=>document.querySelectorAll('.score-bar').forEach(b=>b.style.width=b.dataset.pct+'%'),100);
+
+  // Readiness signal
+  const isDeciding=readiness==='D';
+  document.getElementById('readiness-signal').innerHTML=`
+    <div class="rs-label">Your Readiness Signal</div>
+    <div class="rs-signal">${isDeciding?'You are deciding.':'You are wanting.'}</div>
+    <div class="rs-desc">${isDeciding?td.readinessDeciding:td.readinessWanting}</div>`;
+
+  // Profile cards
+  document.getElementById('profile-grid').innerHTML=`
+    <div class="profile-card highlight"><div class="profile-card-label">What This Means</div><div class="profile-card-content">${td.whatThisMeans}</div></div>
+    <div class="profile-card"><div class="profile-card-label">The Work</div><div class="profile-card-content">${td.theWork}</div></div>`;
+
+  // Future self message
+  const fsType=futureSelf||primary;
+  const fsMessages={N:"Stop waiting for the right moment. The moment is now.",R:"Stop restarting. Just keep going.",W:"It works on weekends too. Trust the process.",C:"Imperfect progress is still progress. Let go of perfect."};
+  document.getElementById('future-self-msg').innerHTML=`
+    <div class="fsm-label">From Your Future Self · You 2.0</div>
+    <div class="fsm-title">If they could send you one message right now:</div>
+    <div class="fsm-message">"${fsMessages[fsType]}"</div>
+    <div class="fsm-sub">This isn't a motivational phrase. It's the specific thing the transformed version of you most needs the current version of you to hear. It came from your own answers.</div>`;
+
+  // Shift stages
+  document.getElementById('shift-stages-result').innerHTML=`
+    <div class="ssr-label">Your Path Through The Shift</div>
+    <div class="ssr-grid">
+      <div class="ssr-item"><div class="ssr-stage">Stage 1</div><div class="ssr-title">The Mirror</div><div class="ssr-desc">Seeing the repeating pattern clearly — without defence, without justification. The moment of genuine self-recognition that changes the conversation permanently.</div></div>
+      <div class="ssr-item"><div class="ssr-stage">Stage 2</div><div class="ssr-title">The Vision</div><div class="ssr-desc">Seeing You 2.0 so vividly — through visualisation and the Question Stack — that your brain begins to treat it as real. Not hope. Belief.</div></div>
+    </div>
+    <p class="ssr-note">${td.shiftNote}</p>`;
+
+  // Blind spots
+  const surfaceHTML=surfaceBlindSpots.map((b,i)=>`<div class="bs-tag${blindspots.surface.has(i)?' active':''}">${b}</div>`).join('');
+  const deepHTML=deepBlindSpots.map((b,i)=>`<div class="bs-tag${blindspots.deep.has(i)?' active':''}">${b}</div>`).join('');
+  document.getElementById('bs-tiers-result').innerHTML=`
+    <div class="bs-tier-result"><div class="bs-tier-title">Surface Blind Spots</div><div class="bs-tags">${surfaceHTML}</div></div>
+    <div class="bs-tier-result"><div class="bs-tier-title">Deep Blind Spots</div><div class="bs-tags">${deepHTML}</div></div>`;
+
+  // Component focus
+  const cf=td.component;
+  document.getElementById('component-focus').innerHTML=`
+    <div class="cf-label">${cf.label}</div>
+    <div class="cf-name">${cf.name}</div>
+    <div class="cf-desc">${cf.desc}</div>
+    <div class="cf-pillars">${cf.pillars.map(p=>`<div class="cf-pillar">${p}</div>`).join('')}</div>`;
+
+  // Podcast recommendation
+  const pr=td.podcastRec;
+  document.getElementById('podcast-rec').innerHTML=`
+    <div class="pr-label">Before Your Diagnostic Call · The Podcast</div>
+    <div class="pr-title">${pr.title}</div>
+    <div class="pr-desc">${pr.desc}</div>
+    <div class="pr-sessions">${pr.sessions.map(s=>`<div class="pr-session"><div class="pr-session-num">${s.num}</div><div class="pr-session-text">${s.text}</div></div>`).join('')}</div>`;
+}
+</script>
+</body>
+</html>

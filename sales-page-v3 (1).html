@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2.0 Method — Darren Tebbenham</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#151412;--bg:#faf7f2;--bg2:#f3ede3;
+  --dark:#0e0d0b;--dark2:#1a1814;
+  --gold:#a8813a;--gold-light:#c9a55a;
+  --gold-pale:rgba(168,129,58,0.1);--gold-border:rgba(168,129,58,0.25);
+  --cream:#faf7f2;--muted:#8a7f6e;--rule:#ddd5c4;--white:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(250,247,242,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:0.5px;}
+.nav-logo span{color:var(--gold);font-weight:300;}
+.nav-logo span{color:var(--gold);}
+.nav-cta{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink);background:none;border:1px solid var(--ink);padding:10px 22px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+.nav-cta:hover{background:var(--ink);color:var(--cream);}
+/* Hamburger */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+.nav-hamburger span{display:block;width:24px;height:2px;background:var(--ink);transition:all 0.3s;}
+.nav-menu{display:none;position:fixed;top:57px;left:0;right:0;background:rgba(250,247,242,0.98);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);padding:20px 20px;flex-direction:column;gap:12px;z-index:99;}
+.nav-menu.open{display:flex;}
+.nav-menu a{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:14px 20px;border:1px solid var(--ink);text-align:center;transition:all 0.2s;}
+.nav-menu a:first-child{background:var(--gold);border-color:var(--gold);color:var(--white);}
+.nav-menu a:hover{background:var(--ink);color:var(--cream);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:stretch;padding:0;position:relative;}
+.hero::before{display:none;}
+.hero-inner{width:100%;display:grid;grid-template-columns:1fr 1fr;align-items:center;}
+.hero-left{min-width:0;padding:80px 52px 80px 52px;background:var(--bg);}
+.hero-eyebrow{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;animation:fadeUp 0.7s ease both;}
+.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,66px);font-weight:600;line-height:1.1;color:var(--ink);margin-bottom:26px;animation:fadeUp 0.7s 0.1s ease both;}
+.hero-headline em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:16px;line-height:1.85;color:var(--muted);margin-bottom:44px;max-width:480px;animation:fadeUp 0.7s 0.18s ease both;}
+.hero-sub strong{color:var(--ink);font-weight:700;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 0.7s 0.25s ease both;}
+.btn-gold{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:10px;background:var(--gold);color:var(--white);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:17px 28px;min-width:220px;border:none;cursor:pointer;transition:all 0.25s;text-decoration:none;}
+.btn-gold:hover{background:var(--ink);transform:translateY(-2px);}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:10px;background:transparent;color:var(--ink);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:17px 28px;min-width:220px;border:1px solid var(--ink);cursor:pointer;transition:all 0.25s;text-decoration:none;}
+.btn-outline:hover{background:var(--ink);color:var(--cream);}
+.hero-right{padding:80px 52px 80px 48px;background:var(--dark);min-width:0;}
+.hero-right .eyebrow-light{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold-light);margin-bottom:28px;}
+.credential-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--cream);margin-bottom:4px;}
+.credential-quals{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:500;color:var(--gold-light);margin-bottom:4px;letter-spacing:1px;}
+.credential-title{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;letter-spacing:0.5px;color:rgba(250,247,242,0.65);margin-bottom:28px;}
+.credential-list{list-style:none;margin-bottom:36px;}
+.credential-list li{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;color:rgba(250,247,242,0.82);padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:flex-start;gap:12px;line-height:1.6;}
+.credential-list li::before{content:'—';color:var(--gold-light);flex-shrink:0;margin-top:1px;}
+.hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:rgba(250,247,242,0.65);line-height:1.6;padding-top:28px;border-top:1px solid rgba(255,255,255,0.12);}
+
+/* SECTIONS */
+section{padding:96px 48px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);}
+.eyebrow.light{color:var(--gold-light);}
+.rule-gold{width:40px;height:1px;background:var(--gold);margin:18px 0;}
+.rule-gold.center{margin:18px auto;}
+
+/* PROBLEM */
+.problem{background:var(--bg);}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.problem-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.5vw,54px);font-weight:600;line-height:1.15;color:var(--ink);margin-bottom:24px;}
+.problem-headline em{font-style:italic;color:var(--gold);}
+.problem-body{font-size:16px;line-height:1.9;color:var(--muted);}
+.problem-body p{margin-bottom:18px;}
+.problem-body strong{color:var(--ink);font-weight:700;}
+.statement-list{display:flex;flex-direction:column;}
+.statement{padding:22px 0;border-bottom:1px solid var(--rule);display:flex;gap:18px;align-items:flex-start;}
+.statement:first-child{border-top:1px solid var(--rule);}
+.statement-check{width:18px;height:18px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.statement-check::after{content:'✓';font-size:9px;color:var(--gold);font-family:'Montserrat',sans-serif;}
+.statement-text{font-size:15px;line-height:1.75;color:var(--ink);}
+
+/* BOOK PULL QUOTE */
+.pull-quote-section{background:var(--dark);padding:64px 48px;}
+.pq-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.pq-item{padding:32px 28px;border:1px solid rgba(201,165,90,0.15);text-align:center;}
+.pq-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;font-weight:600;color:rgba(250,247,242,0.92);line-height:1.5;margin-bottom:12px;}
+.pq-source{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);}
+
+/* PATTERNS */
+.patterns-section{background:var(--bg2);}
+.patterns-header{text-align:center;margin-bottom:64px;}
+.patterns-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.5vw,54px);font-weight:600;color:var(--ink);line-height:1.15;margin-bottom:18px;}
+.patterns-headline em{font-style:italic;color:var(--gold);}
+.patterns-sub{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:300;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.8;}
+.pattern-cards{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:48px;}
+.pattern-card{background:var(--bg);padding:36px 30px;position:relative;overflow:hidden;border-top:2px solid transparent;transition:border-color 0.3s;}
+.pattern-card:hover{border-top-color:var(--gold);}
+.pattern-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:300;color:rgba(168,129,58,0.07);position:absolute;top:10px;right:14px;line-height:1;}
+.pattern-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.pattern-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:14px;}
+.pattern-desc{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;line-height:1.8;color:var(--muted);margin-bottom:18px;}
+.pattern-truth{font-family:'Libre Baskerville',serif;font-style:italic;font-size:12.5px;color:var(--muted);line-height:1.6;padding-top:16px;border-top:1px solid var(--rule);}
+.pattern-cta-row{text-align:center;}
+.pattern-cta-note{font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:300;color:var(--muted);margin-top:14px;}
+.btn-ink-outline{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--ink);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 32px;border:1px solid var(--ink);cursor:pointer;transition:all 0.25s;text-decoration:none;}
+.btn-ink-outline:hover{background:var(--ink);color:var(--cream);}
+
+/* FRAMEWORK */
+.framework{background:var(--bg);}
+.framework-header{margin-bottom:64px;}
+.framework-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.5vw,54px);font-weight:600;line-height:1.15;color:var(--ink);margin-bottom:18px;max-width:680px;}
+.framework-headline em{font-style:italic;color:var(--gold);}
+.framework-intro{font-size:14px;line-height:1.85;color:var(--muted);max-width:600px;}
+.framework-steps{display:flex;flex-direction:column;gap:2px;margin-bottom:2px;}
+.framework-step{display:grid;grid-template-columns:72px 1fr 1fr;gap:0;background:var(--bg2);overflow:hidden;transition:transform 0.2s;}
+.framework-step:hover{transform:translateX(4px);}
+.step-number{background:var(--ink);display:flex;align-items:center;justify-content:center;padding:36px 16px;}
+.step-num-text{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold-light);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);}
+.step-main{padding:36px 40px;border-right:1px solid var(--rule);}
+.step-tag{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.step-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--ink);margin-bottom:14px;}
+.step-desc{font-size:15px;line-height:1.85;color:var(--muted);}
+.step-detail{padding:36px 40px;}
+.step-detail-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.step-pillars{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.step-pillars li{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:12px;}
+.step-pillars li::before{content:'';display:block;width:20px;height:1px;background:var(--gold);flex-shrink:0;}
+
+/* Shift stages */
+.shift-stages-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;}
+.shift-stage-item{background:var(--dark);padding:28px 32px;border-top:2px solid var(--gold);}
+.ssi-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);margin-bottom:8px;}
+.ssi-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:10px;}
+.ssi-desc{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:rgba(250,247,242,0.78);line-height:1.75;}
+
+/* Rewrite step */
+.rewrite-step{background:var(--dark2);border-left:3px solid var(--gold);padding:28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+.rs-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.rs-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:12px;}
+.rs-desc{font-size:13px;line-height:1.8;color:rgba(250,247,242,0.78);}
+.rs-note{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.45);line-height:1.7;font-style:italic;}
+
+/* QUESTION STACK */
+.question-stack-section{background:var(--dark);padding:80px 48px;}
+.qs-inner{max-width:900px;margin:0 auto;}
+.qs-header{text-align:center;margin-bottom:48px;}
+.qs-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:14px;}
+.qs-headline em{font-style:italic;color:var(--gold-light);}
+.qs-sub{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:rgba(250,247,242,0.72);max-width:520px;margin:0 auto;line-height:1.8;}
+.qs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.qs-card{padding:28px 32px;border:1px solid var(--gold-border);background:rgba(255,255,255,0.02);position:relative;}
+.qs-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gold);}
+.qs-q{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;font-weight:600;color:rgba(250,247,242,0.92);line-height:1.5;margin-bottom:10px;}
+.qs-effect{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:400;color:rgba(250,247,242,0.55);line-height:1.7;}
+
+/* BLIND SPOTS */
+.blindspots-section{background:var(--bg2);}
+.bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.bs-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,42px);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:22px;}
+.bs-headline em{font-style:italic;color:var(--gold);}
+.bs-body{font-size:13.5px;line-height:1.9;color:var(--muted);}
+.bs-body p{margin-bottom:14px;}
+.bs-tiers{display:flex;flex-direction:column;gap:32px;}
+.bs-tier-label{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule);}
+.bs-items{display:flex;flex-direction:column;}
+.bs-item{padding:18px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:flex-start;}
+.bs-item:first-of-type{border-top:1px solid var(--rule);}
+.bs-n{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--gold);line-height:1;padding-top:2px;}
+.bs-text{font-size:15px;line-height:1.7;color:var(--ink);font-weight:400;}
+.bs-sub{font-size:12.5px;font-family:'Montserrat',sans-serif;font-weight:400;color:var(--muted);margin-top:4px;line-height:1.65;}
+
+/* PHILOSOPHY */
+.philosophy{background:var(--dark);padding:112px 48px;}
+.phil-inner{max-width:780px;margin:0 auto;text-align:center;}
+.phil-rule{width:1px;height:56px;background:linear-gradient(to bottom,transparent,var(--gold-light));margin:0 auto 36px;}
+.phil-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(26px,4vw,46px);font-weight:300;color:var(--cream);line-height:1.4;margin-bottom:28px;}
+.phil-quote em{color:var(--gold-light);font-style:normal;}
+.phil-attr{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold-light);margin-bottom:40px;}
+.phil-body{font-size:14px;line-height:1.9;color:rgba(250,247,242,0.5);max-width:580px;margin:0 auto;}
+.phil-rule-b{width:1px;height:56px;background:linear-gradient(to top,transparent,var(--gold-light));margin:36px auto 0;}
+
+/* SWITCH */
+.switch-section{background:var(--bg);}
+.switch-inner{max-width:920px;margin:0 auto;}
+.switch-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:14px;}
+.switch-headline em{font-style:italic;color:var(--gold);}
+.switch-body{font-size:14px;line-height:1.9;color:var(--muted);max-width:640px;margin-bottom:44px;}
+.switch-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.switch-card{background:var(--bg2);padding:32px 28px;border-top:2px solid var(--gold);}
+.sc-n{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.sc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+.sc-desc{font-size:14px;line-height:1.8;color:var(--muted);}
+
+/* ABOUT */
+.about-section{background:var(--dark);padding:96px 48px;}
+.about-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.about-left .eyebrow-light{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold-light);margin-bottom:20px;}
+.about-name{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;color:var(--cream);line-height:1.05;margin-bottom:6px;}
+.about-quals{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;color:var(--gold-light);margin-bottom:4px;letter-spacing:1px;}
+.about-subtitle{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.4);margin-bottom:28px;letter-spacing:1px;}
+.about-body{font-size:13.5px;line-height:1.9;color:rgba(250,247,242,0.6);}
+.about-body p{margin-bottom:16px;}
+.about-body strong{color:rgba(250,247,242,0.85);font-weight:600;}
+.about-right{}
+.about-credentials{list-style:none;margin-bottom:32px;}
+.about-credentials li{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.55);padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:14px;align-items:flex-start;line-height:1.55;}
+.about-credentials li::before{content:'—';color:var(--gold-light);flex-shrink:0;margin-top:1px;}
+.about-book{background:rgba(201,165,90,0.08);border:1px solid var(--gold-border);padding:24px 28px;}
+.ab-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+.ab-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--cream);margin-bottom:6px;line-height:1.2;}
+.ab-sub{font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:300;color:rgba(250,247,242,0.45);line-height:1.6;}
+
+/* PROGRAMMES */
+.programmes-section{background:var(--bg2);}
+.prog-header{text-align:center;margin-bottom:64px;}
+.prog-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-weight:300;color:var(--ink);line-height:1.2;margin-bottom:14px;}
+.prog-headline em{font-style:italic;color:var(--gold);}
+.prog-sub{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:300;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.8;}
+.prog-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:44px;}
+.prog-card{background:var(--bg);border:1px solid var(--rule);padding:44px 36px;position:relative;}
+.prog-card.featured{background:var(--dark);border-color:var(--gold);}
+.prog-card.featured::before{content:'MOST POPULAR';position:absolute;top:-1px;right:28px;background:var(--gold);color:var(--white);font-family:'Montserrat',sans-serif;font-size:7px;font-weight:700;letter-spacing:3px;padding:5px 14px;}
+.prog-type{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.prog-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.1;}
+.prog-card.featured .prog-name{color:var(--cream);}
+.prog-duration{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:var(--muted);margin-bottom:28px;}
+.prog-card.featured .prog-duration{color:rgba(250,247,242,0.4);}
+.prog-includes{list-style:none;margin-bottom:32px;}
+.prog-includes li{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;color:var(--muted);padding:9px 0;border-bottom:1px solid var(--rule);display:flex;gap:12px;align-items:flex-start;line-height:1.55;}
+.prog-card.featured .prog-includes li{color:rgba(250,247,242,0.78);border-bottom-color:rgba(255,255,255,0.08);}
+.prog-includes li::before{content:'✓';color:var(--gold);font-size:9px;flex-shrink:0;margin-top:3px;}
+.prog-price{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:300;color:var(--muted);margin-bottom:20px;}
+.prog-card.featured .prog-price{color:rgba(250,247,242,0.35);}
+.prog-price strong{font-size:34px;font-weight:600;color:var(--ink);font-family:'Cormorant Garamond',serif;}
+.prog-card.featured .prog-price strong{color:var(--cream);}
+.btn-prog{display:block;text-align:center;font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:all 0.2s;text-decoration:none;border:1px solid var(--ink);color:var(--ink);background:transparent;}
+.btn-prog:hover{background:var(--ink);color:var(--cream);}
+.prog-card.featured .btn-prog{background:var(--gold);border-color:var(--gold);color:var(--white);}
+.prog-card.featured .btn-prog:hover{background:var(--cream);border-color:var(--cream);color:var(--ink);}
+.prog-note{text-align:center;font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:300;color:var(--muted);line-height:1.7;}
+.prog-note strong{color:var(--ink);font-weight:500;}
+
+/* OUTCOME */
+.outcome-section{background:var(--bg);}
+.outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.outcome-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:24px;}
+.outcome-headline em{font-style:italic;color:var(--gold);}
+.outcome-body{font-size:13.5px;line-height:1.9;color:var(--muted);margin-bottom:36px;}
+.outcome-body p{margin-bottom:14px;}
+.outcome-body strong{color:var(--ink);}
+.outcome-cards{display:flex;flex-direction:column;}
+.outcome-card{padding:24px 28px;border-bottom:1px solid var(--rule);}
+.outcome-card:first-child{border-top:1px solid var(--rule);}
+.oc-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.oc-text{font-size:15px;line-height:1.8;color:var(--ink);}
+
+/* FOR WHO */
+.forwho-section{background:var(--dark2);padding:96px 48px;}
+.forwho-inner{max-width:920px;margin:0 auto;}
+.forwho-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:300;color:var(--cream);line-height:1.2;}
+.forwho-headline em{font-style:italic;color:var(--gold-light);}
+.forwho-cols{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;}
+.forwho-col{background:var(--dark);padding:40px 36px;}
+.forwho-col-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.forwho-col.yes .forwho-col-label{color:var(--gold-light);}
+.forwho-col.no .forwho-col-label{color:var(--muted);}
+.forwho-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.forwho-list li{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:400;line-height:1.7;display:flex;gap:12px;align-items:flex-start;}
+.forwho-col.yes .forwho-list li{color:rgba(250,247,242,0.82);}
+.forwho-col.no .forwho-list li{color:rgba(250,247,242,0.28);}
+.forwho-col.yes .forwho-list li::before{content:'✓';color:var(--gold-light);flex-shrink:0;font-size:9px;margin-top:3px;}
+.forwho-col.no .forwho-list li::before{content:'×';color:var(--muted);flex-shrink:0;font-size:11px;margin-top:1px;}
+
+/* CTA */
+.cta-section{background:var(--bg2);}
+.cta-inner{max-width:800px;margin:0 auto;text-align:center;}
+.cta-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,58px);font-weight:300;line-height:1.15;color:var(--ink);margin-bottom:22px;}
+.cta-headline em{font-style:italic;color:var(--gold);}
+.cta-body{font-size:14px;line-height:1.9;color:var(--muted);max-width:580px;margin:0 auto 44px;}
+.cta-body strong{color:var(--ink);}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.cta-small{font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:300;color:var(--muted);font-style:italic;}
+.cta-what{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px;}
+.cta-what-item{background:var(--bg);padding:28px 24px;text-align:left;}
+.cwi-num{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:10px;}
+.cwi-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.cwi-text{font-size:12.5px;line-height:1.7;color:var(--ink);}
+
+/* FOOTER */
+footer{background:var(--dark);padding:56px 48px;}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:44px;align-items:center;}
+.footer-left{font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:300;line-height:1.9;color:rgba(250,247,242,0.38);}
+.footer-left strong{display:block;font-weight:600;color:rgba(250,247,242,0.65);margin-bottom:3px;font-size:11.5px;}
+.footer-left .quals{color:var(--gold-light);font-size:10px;margin-bottom:4px;display:block;}
+.footer-center{text-align:center;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--cream);letter-spacing:1px;}
+.footer-logo span{color:var(--gold-light);}
+.footer-tagline{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.footer-right{text-align:right;font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:300;line-height:1.9;color:rgba(250,247,242,0.38);}
+.footer-right a{color:var(--gold-light);text-decoration:none;}
+.footer-right a:hover{color:var(--cream);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── TABLET (max 920px) ── */
+@media(max-width:920px){
+  nav{padding:14px 20px;}
+  section{padding:64px 20px;}
+  .hero{padding:96px 20px 56px;}
+  .hero::before{display:none;}
+  .hero-inner,.problem-grid,.outcome-grid,.bs-grid,.prog-cards,.forwho-cols,
+  .pattern-cards,.qs-grid,.switch-cards,.cta-what,.about-inner{grid-template-columns:1fr;}
+  .framework-step{grid-template-columns:56px 1fr;}
+  /* Show step-detail stacked below step-main on tablet */
+  .framework-step{grid-template-columns:56px 1fr;flex-wrap:wrap;}
+  .step-detail{display:block;border-top:1px solid var(--rule);padding:24px 32px;}
+  .shift-stages-grid,.rewrite-step{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr;text-align:center;}
+  .footer-right{text-align:center;}
+  .hero-right{padding:36px 28px;background:var(--dark);border-radius:0;}
+  .hero-inner{padding:0 20px;}
+  .hero::before{display:none;}
+  .pull-quote-section .pq-inner{grid-template-columns:1fr;}
+  /* Fix inline-style pull quote grids */
+  .pull-quote-section [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr !important;}
+  /* Podcast section inline grid */
+  section [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr !important;}
+}
+
+/* ── MOBILE (max 600px) ── */
+@media(max-width:600px){
+  nav{padding:12px 16px;}
+  nav .nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+  section{padding:52px 16px;}
+  .hero-left{padding:44px 20px 40px 20px;}
+  .hero-right{padding:40px 20px 56px 20px;}
+
+  /* Typography scale-down for mobile */
+  .hero-headline{font-size:clamp(36px,9vw,52px) !important;font-weight:700 !important;line-height:1.1;}
+  .problem-headline,.patterns-headline,.framework-headline,
+  .prog-headline,.outcome-headline,.switch-headline,
+  .forwho-headline,.cta-headline,.qs-headline{font-size:clamp(26px,7vw,38px) !important;line-height:1.2;}
+  .about-name{font-size:32px !important;}
+  .step-name{font-size:24px !important;}
+  .pattern-name{font-size:22px !important;}
+
+  /* Body text — minimum 16px for 50+ readability */
+  .problem-body,.about-body,.framework-intro,.switch-body,
+  .outcome-body,.prog-sub,.patterns-sub,.cta-body{font-size:16px !important;line-height:1.85;}
+  .step-desc,.pattern-desc,.prog-includes li,
+  .forwho-list li,.sc-desc{font-size:14px !important;line-height:1.8;}
+  .step-pillars li{font-size:14px !important;}
+  .qs-effect{font-size:13px !important;line-height:1.75;}
+  .oc-text{font-size:15px !important;}
+  .bs-text{font-size:15px !important;}
+
+  /* Framework steps — full width, stacked */
+  .framework-step{grid-template-columns:1fr !important;display:flex;flex-direction:column;}
+  .step-number{display:none;} /* hide vertical number column on mobile */
+  .step-main{padding:24px 20px;border-right:none;border-bottom:1px solid var(--rule);}
+  .step-detail{display:block !important;padding:20px;background:var(--bg);}
+  .step-detail-label{font-size:8px;margin-bottom:10px;}
+  .step-pillars li{font-size:12px;}
+
+  /* Shift stages — single column */
+  .shift-stages-grid{grid-template-columns:1fr !important;}
+  .shift-stage-item{padding:22px 20px;}
+  .ssi-name{font-size:22px !important;}
+  .ssi-desc{font-size:14px !important;color:rgba(250,247,242,0.82);}
+
+  /* Rewrite block */
+  .rewrite-step{grid-template-columns:1fr !important;padding:20px 24px;gap:16px;}
+
+  /* Pattern cards — single column */
+  .pattern-cards{grid-template-columns:1fr !important;}
+  .pattern-card{padding:28px 22px;}
+
+  /* Pull quote grids */
+  .pull-quote-section [style*="grid-template-columns"]{grid-template-columns:1fr !important;}
+  .pq-item{padding:20px 16px;}
+  .pq-quote{font-size:15px !important;}
+
+  /* Podcast section */
+  section [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr !important;}
+
+  /* Question stack grid */
+  .qs-grid{grid-template-columns:1fr !important;}
+  .qs-q{font-size:17px !important;color:rgba(250,247,242,0.95) !important;}
+
+  /* Switch cards */
+  .switch-cards{grid-template-columns:1fr !important;}
+  .sc-title{font-size:18px;}
+
+  /* Programmes */
+  .prog-cards{grid-template-columns:1fr !important;}
+  .prog-card{padding:32px 24px;}
+  .prog-name{font-size:24px !important;}
+
+  /* CTA what-is-it grid */
+  .cta-what{grid-template-columns:1fr !important;}
+
+  /* For who */
+  .forwho-cols{grid-template-columns:1fr !important;}
+
+  /* Outcomes */
+  .outcome-grid{grid-template-columns:1fr !important;}
+
+  /* About */
+  .about-inner{grid-template-columns:1fr !important;}
+  .about-name{font-size:28px !important;}
+
+  /* BS grid */
+  .bs-grid{grid-template-columns:1fr !important;}
+
+  /* Footer */
+  .footer-inner{grid-template-columns:1fr !important;text-align:center;gap:24px;}
+  .footer-right{text-align:center;}
+
+  /* Buttons — full width on mobile */
+  .hero-actions{flex-direction:column;gap:12px;}
+  .btn-gold,.btn-outline{width:100%;justify-content:center;padding:16px 20px;}
+  .cta-buttons{flex-direction:column;align-items:center;}
+
+  /* Prog note */
+  .prog-note{font-size:12px;}
+
+  /* Credential list */
+  .credential-list li{font-size:10px;}
+
+  /* Prog card featured badge */
+  .prog-card.featured::before{font-size:6px;padding:4px 10px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Inside-Out <span>Transformation</span></div>
+  <a href="https://www.dt.coach/yourcall" class="nav-cta">Book a Call</a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-menu" id="navMenu">
+  <a href="https://www.dt.coach/yourcall" onclick="toggleMenu()">Book a Diagnostic Call</a>
+  <a href="https://www.dt.coach/profile" onclick="toggleMenu()">Take the 2.0 Profile Test</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div style="display:inline-block;border:1.5px solid var(--ink);padding:10px 28px;margin-bottom:16px;animation:fadeUp 0.7s ease both;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--ink);letter-spacing:1px;line-height:1;">The <span style="color:var(--gold);">2.0</span> Method</div>
+      </div>
+      <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:20px;max-width:480px;animation:fadeUp 0.7s 0.05s ease both;">Most weight loss programmes address the behaviour. The 2.0 Method addresses what's running it.</p>
+      <h1 class="hero-headline">Willpower, motivation,<br>and being strong-minded<br><em>won't fix this.</em><br>Here's why.</h1>
+      <p class="hero-sub">This isn't about information. You have enough of that. It's about the part of you that already knows what to do — <strong>and doesn't.</strong> Understanding why that gap exists, and closing it permanently, is what the 2.0 Method was built to do.</p>
+      <div class="hero-actions">
+        <a href="https://www.dt.coach/yourcall" class="btn-gold">Book a Diagnostic Call</a>
+        <a href="https://www.dt.coach/profile" class="btn-outline">Take the 2.0 Profile Test</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="eyebrow-light">Your Coach</div>
+      <div class="credential-name">Darren Tebbenham</div>
+      <div class="credential-quals">BSc, MSc</div>
+      <div class="credential-title">Behaviour Change Coach · Author · Former University Lecturer</div>
+      <ul class="credential-list">
+        <li>BSc and MSc in sport and exercise science and psychology</li>
+        <li>Three years lecturing exercise psychology to degree-level student teachers</li>
+        <li>15+ years training personal trainers and coaches worldwide — 3,000+ trained</li>
+        <li>Author — The Psychology of Weight Loss & The Biology of Weight Loss</li>
+        <li>Two decades at the intersection of applied psychology and behaviour change</li>
+        <li>Clinical experience with obesity, type 2 diabetes, and complex cases</li>
+      </ul>
+      <div class="hero-quote">"Progress isn't lost in the slip. It's lost in the story you tell yourself afterwards."</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="section-inner">
+    <div class="problem-grid">
+      <div class="problem-left reveal">
+        <div class="eyebrow">The Real Problem</div>
+        <div class="rule-gold"></div>
+        <h2 class="problem-headline">The outside-in approach<br><em>never worked.</em><br>It never will.</h2>
+        <div class="problem-body">
+          <p>Every programme you've tried has addressed the behaviour. The plan. The protocol. The willpower. None of them addressed what was running the behaviour underneath.</p>
+          <p>That's not your failure. It's the failure of an entire industry solving the wrong problem for decades. <strong>Weight loss is not just an exercise and nutrition problem. It's a psychological one.</strong></p>
+          <p>The behaviour is the symptom. The pattern is the cause. And the pattern lives in a part of the brain that logic, discipline, and calorie tracking simply cannot reach.</p>
+          <p>Until you address that layer — the patterns, the identity, the blind spots — every plan will eventually fail. Not because you're not trying hard enough. Because you're using the wrong tool for the wrong problem.</p>
+        </div>
+      </div>
+      <div class="problem-right reveal">
+        <div class="statement-list">
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">"I know what to do. I just don't do it consistently."</div></div>
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">"I always undo my progress when life gets stressful."</div></div>
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">"I don't understand why this feels so much harder than it should."</div></div>
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">You've succeeded at difficult things professionally. This one feels categorically different.</div></div>
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">You've started again more times than you can count. Each restart feels heavier.</div></div>
+          <div class="statement"><div class="statement-check"></div><div class="statement-text">Nothing is wrong with you. You are not broken. But something has been running the show — and it isn't willpower.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTES FROM THE BOOK -->
+<div class="pull-quote-section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:40px;" class="reveal">
+      <div style="font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);">Two Books · One Method · One Truth</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;" class="reveal">
+      <div class="pq-item" style="border-top:2px solid var(--gold);">
+        <div class="pq-quote">"Progress isn't lost in the slip. It's lost in the story you tell yourself afterwards."</div>
+        <div class="pq-source">The Psychology of Weight Loss</div>
+      </div>
+      <div class="pq-item" style="border-top:2px solid rgba(201,165,90,0.4);">
+        <div class="pq-quote">"You cannot think your way out of a biological block."</div>
+        <div class="pq-source">The Biology of Weight Loss</div>
+      </div>
+      <div class="pq-item" style="border-top:2px solid var(--gold);">
+        <div class="pq-quote">"Most people don't need more motivation. They need fewer decisions."</div>
+        <div class="pq-source">The Psychology of Weight Loss</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:2px;" class="reveal">
+      <div class="pq-item" style="border-top:2px solid rgba(201,165,90,0.4);">
+        <div class="pq-quote">"Fat loss becomes possible again — when the body is no longer working against you."</div>
+        <div class="pq-source">The Biology of Weight Loss</div>
+      </div>
+      <div class="pq-item" style="border-top:2px solid var(--gold);">
+        <div class="pq-quote">"Consistency isn't built during perfect weeks. It's built in the messy ones."</div>
+        <div class="pq-source">The Psychology of Weight Loss</div>
+      </div>
+      <div class="pq-item" style="border-top:2px solid rgba(201,165,90,0.4);">
+        <div class="pq-quote">"When biology is on your side, consistency stops being a personality trait and becomes the natural result."</div>
+        <div class="pq-source">The Biology of Weight Loss</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PATTERNS -->
+<section class="patterns-section">
+  <div class="section-inner">
+    <div class="patterns-header reveal">
+      <div class="eyebrow">The Four Patterns</div>
+      <div class="rule-gold center"></div>
+      <h2 class="patterns-headline">One of these is you.<br><em>Recognise yourself.</em></h2>
+      <p class="patterns-sub">After two decades of working with people at the intersection of psychology and behaviour change, four distinct patterns emerge. They are not character flaws. They are sophisticated psychological strategies — and each one has a specific entry point.</p>
+    </div>
+    <div class="pattern-cards reveal">
+      <div class="pattern-card">
+        <div class="pattern-num">01</div>
+        <div class="pattern-label">Pattern One</div>
+        <div class="pattern-name">The Perpetual Negotiator</div>
+        <div class="pattern-desc">Intelligent, self-aware, always one exception away from full commitment. Social events, the wrong timing, one more condition — the case for delay is always convincing. Capability was never the issue. Commitment is.</div>
+        <div class="pattern-truth">"I'll properly commit when the conditions are right." The conditions are never quite right.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">02</div>
+        <div class="pattern-label">Pattern Two</div>
+        <div class="pattern-name">The Resilient Restarter</div>
+        <div class="pattern-desc">Strong, determined, keeps coming back. Genuine wins in the history. Willpower is the tool — but the emotional brain doesn't tire the way the rational brain does. Every restart depletes the very resource being relied on.</div>
+        <div class="pattern-truth">"This time will be different." And you mean it. Every time.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">03</div>
+        <div class="pattern-label">Pattern Three</div>
+        <div class="pattern-name">The Weekday Warrior</div>
+        <div class="pattern-desc">Disciplined and structured Monday to Friday. Undone when structure disappears. The plan relies on the environment rather than being embedded in identity — when the environment changes, the behaviour follows.</div>
+        <div class="pattern-truth">"I just need to crack the weekend." The weekend is a symptom, not the cause.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">04</div>
+        <div class="pattern-label">Pattern Four</div>
+        <div class="pattern-name">The Clean Slater</div>
+        <div class="pattern-desc">Clears the decks, commits to perfection, drops at the first hurdle — then blames the circumstance rather than the pattern. Won't go deeper. Insists the problem is willpower or timing. The clean slate ritual prevents real change.</div>
+        <div class="pattern-truth">"I just need a clean run — then I'll nail it." The clean run never quite comes.</div>
+      </div>
+    </div>
+    <div class="pattern-cta-row reveal">
+      <a href="https://www.dt.coach/profile" class="btn-ink-outline">Discover Your Pattern — Take the Free 2.0 Profile →</a>
+      <div class="pattern-cta-note">13 questions · 5 minutes · Your full psychological profile</div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section class="framework">
+  <div class="section-inner">
+    <div class="framework-header reveal">
+      <div class="eyebrow">The Framework</div>
+      <div class="rule-gold"></div>
+      <h2 class="framework-headline">Three components.<br>One sequence.<br><em>The only order that works.</em></h2>
+      <p class="framework-intro">The 2.0 Method is built on twenty years of applied work at the intersection of psychology and behaviour change. Psychology must come before biology. Identity must be rebuilt before habits can stick. This is the sequence that doesn't revert.</p>
+    </div>
+    <div class="framework-steps reveal">
+      <div class="framework-step">
+        <div class="step-number"><div class="step-num-text">01</div></div>
+        <div class="step-main">
+          <div class="step-tag">Component One · Psychology</div>
+          <div class="step-name">The Code</div>
+          <div class="step-desc">The psychological foundation. Three internal commitments that make everything else possible. Without The Code in place, every plan eventually fails — not because of the plan, but because of what's running underneath it. This is where the pattern work begins.</div>
+        </div>
+        <div class="step-detail">
+          <div class="step-detail-label">The Three Commitments</div>
+          <ul class="step-pillars"><li>Be your own priority</li><li>Do what you say</li><li>Be resourceful</li></ul>
+        </div>
+      </div>
+      <div class="framework-step">
+        <div class="step-number"><div class="step-num-text">02</div></div>
+        <div class="step-main">
+          <div class="step-tag">Component Two · Transformation</div>
+          <div class="step-name">The Shift</div>
+          <div class="step-desc">A two-stage transformation. Stage 1 — The Mirror: the pattern becomes undeniable. Stage 2 — The Vision: You 2.0 becomes vivid enough to believe. Not willpower. A genuine change in who you are in relation to this. The results don't revert because the identity has changed.</div>
+        </div>
+        <div class="step-detail">
+          <div class="step-detail-label">Two Stages</div>
+          <ul class="step-pillars"><li>Stage 1 — The Mirror</li><li>Stage 2 — The Vision</li><li>The Question Stack as the mechanism</li><li>Visualisation meditations throughout</li></ul>
+        </div>
+      </div>
+      <div class="framework-step">
+        <div class="step-number"><div class="step-num-text">03</div></div>
+        <div class="step-main">
+          <div class="step-tag">Component Three · Biology</div>
+          <div class="step-name">The Switch</div>
+          <div class="step-desc">Insulin control first — allowing the body to use fat for fuel. A nourishment-centred approach that eliminates cravings, stabilises energy, and makes losing weight feel like gaining life. The Switch only lands permanently because The Code and The Shift came first.</div>
+        </div>
+        <div class="step-detail">
+          <div class="step-detail-label">The Protocol</div>
+          <ul class="step-pillars"><li>Control insulin — unlock fat fuel</li><li>Nourishment not deprivation</li><li>Control carbs · prioritise protein</li><li>Don't fear fat</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shift stages -->
+    <div class="shift-stages-grid reveal">
+      <div class="shift-stage-item">
+        <div class="ssi-label">Stage 1 of The Shift</div>
+        <div class="ssi-name">The Mirror</div>
+        <div class="ssi-desc">The moment the repeating pattern is seen for what it is — without defence, without justification. Not intellectual acknowledgement. Visceral recognition. This is the entry point that changes everything.</div>
+      </div>
+      <div class="shift-stage-item">
+        <div class="ssi-label">Stage 2 of The Shift</div>
+        <div class="ssi-name">The Vision</div>
+        <div class="ssi-desc">Seeing You 2.0 so vividly — through visualisation and the Question Stack — that the brain begins to treat it as real. Not hope. Not motivation. Belief. The felt sense of the person you are already becoming.</div>
+      </div>
+    </div>
+
+    <!-- The Rewrite -->
+    <div class="rewrite-step reveal">
+      <div>
+        <div class="rs-label">The Bridge · Between Shift and Switch</div>
+        <div class="rs-name">The Rewrite</div>
+        <div class="rs-desc">Reprogramming the autopilot. Installing new identity-based habits at the level of the automatic brain — so that the change becomes who you are, not what you're trying to do. This is where "easy and effortless" is actually built. When the psychology and biology are finally aligned, fat loss becomes possible again — not through effort but through congruence.</div>
+      </div>
+      <div class="rs-note">"Consistency becomes who you are — not something you do."<br><br>— The Biology of Weight Loss</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTION STACK -->
+<section class="question-stack-section">
+  <div class="qs-inner">
+    <div class="qs-header reveal">
+      <div class="eyebrow light">The Coaching Signature</div>
+      <div class="rule-gold center"></div>
+      <h2 class="qs-headline">The Question Stack.<br><em>Four questions that change everything.</em></h2>
+      <p class="qs-sub">Used at precisely the right moment in the coaching work, each question dismantles a layer of the pattern that no plan has ever reached. These questions don't give answers — they make the right answers undeniable.</p>
+    </div>
+    <div class="qs-grid reveal">
+      <div class="qs-card">
+        <div class="qs-q">"What meaning are you giving this — to give it the power it has?"</div>
+        <div class="qs-effect">Dismantles the belief that the problem is fixed and external. The damage rarely comes from the choice itself. It comes from the meaning attached to it.</div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-q">"Imagine walking in the footsteps of your future self. How would they tackle this?"</div>
+        <div class="qs-effect">Activates future-self thinking. Bypasses the emotional brain's catastrophising by grounding the answer in You 2.0's certainty rather than today's fear.</div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-q">"Looking back as You 2.0 — someone who has already solved this — how did you do it?"</div>
+        <div class="qs-effect">Collapses time. Assumes the outcome and asks for the method. The answer comes from strength, not fear — and it's always already there.</div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-q">"There is no reality, only perception. What story are you telling — and what would change if you told a better one?"</div>
+        <div class="qs-effect">The deepest challenge. Questions the bedrock assumption that the problem is real in the way the client believes it is. Identity begins to shift here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLIND SPOTS -->
+<section class="blindspots-section">
+  <div class="section-inner">
+    <div class="bs-grid">
+      <div class="bs-left reveal">
+        <div class="eyebrow">The Blind Spots</div>
+        <div class="rule-gold"></div>
+        <h2 class="bs-headline">What you can't see<br><em>is what's keeping<br>you stuck.</em></h2>
+        <div class="bs-body">
+          <p>A blind spot isn't a weakness. It's a perception gap — something so embedded in how you see yourself that you genuinely cannot see it without help.</p>
+          <p>These blind spots appear across almost everyone I work with. Some sit on the surface and are visible with a little help. Others run deeper and require real work to surface.</p>
+          <p>The deepest one — that your barriers are character flaws rather than conditioning — is always the first thing we dismantle. Because until that belief changes, nothing else can.</p>
+        </div>
+      </div>
+      <div class="bs-right reveal">
+        <div class="bs-tiers">
+          <div>
+            <div class="bs-tier-label">Surface Blind Spots · Visible with help</div>
+            <div class="bs-items">
+              <div class="bs-item"><div class="bs-n">1</div><div><div class="bs-text">Expecting transformation from minimal effort</div><div class="bs-sub">A little effort, a lot of hope. The gap between input and expectation is where most people quietly give up.</div></div></div>
+              <div class="bs-item"><div class="bs-n">2</div><div><div class="bs-text">Ready-made excuses loaded before the situation arrives</div><div class="bs-sub">These aren't spontaneous justifications. The excuse is constructed in advance and deployed automatically.</div></div></div>
+              <div class="bs-item"><div class="bs-n">3</div><div><div class="bs-text">Externalising blame — real reasons used to remove agency</div><div class="bs-sub">The reasons are real. But they're being used in a way that makes change impossible.</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="bs-tier-label">Deep Blind Spots · Require real work to surface</div>
+            <div class="bs-items">
+              <div class="bs-item"><div class="bs-n">4</div><div><div class="bs-text">Self-talk as the hidden narrator running everything</div><div class="bs-sub">The voice underneath the voice. It runs the pattern before the conscious mind can intervene. Awareness is the first intervention.</div></div></div>
+              <div class="bs-item"><div class="bs-n">5</div><div><div class="bs-text">Barriers interpreted as permanent character flaws</div><div class="bs-sub">The most damaging belief of all. It mislocates the problem entirely — and ensures it can never be solved from where it's being looked at.</div></div></div>
+              <div class="bs-item"><div class="bs-n">6</div><div><div class="bs-text">Using food to cope — conditioning, not weakness</div><div class="bs-sub">Food is one of the fastest ways to change how you feel. When you understand this is conditioning, not character, the shame disappears. The work becomes management.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <div class="phil-inner reveal">
+    <div class="phil-rule"></div>
+    <div class="phil-quote">"Be before you are,<br>and you shall <em>become.</em>"</div>
+    <div class="phil-attr">The 2.0 Method · Core Principle</div>
+    <p class="phil-body">How we think is the most powerful switch of all. Changing your weight is not a test of discipline or willpower — it is a process of growth. And that growth begins not with a better plan but with a clearer, more vivid, more deeply believed vision of who you are already becoming. When you stop fighting yourself and start working with your brain, weight loss stops being a battle. It becomes a by-product of living with more awareness, compassion, and consistency.</p>
+    <div style="margin:32px auto 0;max-width:600px;padding:24px 32px;border:1px solid rgba(201,165,90,0.25);">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:rgba(250,247,242,0.8);line-height:1.55;margin-bottom:8px;">"When biology is on your side, consistency stops being a personality trait and becomes the natural result."</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);">The Biology of Weight Loss</div>
+    </div>
+    <div class="phil-rule-b"></div>
+  </div>
+</div>
+
+<!-- SWITCH DETAIL -->
+<section class="switch-section">
+  <div class="switch-inner">
+    <div class="reveal">
+      <div class="eyebrow">The Switch · The Biology</div>
+      <div class="rule-gold"></div>
+      <h2 class="switch-headline">Nourishment,<br><em>not deprivation.</em></h2>
+      <div style="border-left:3px solid var(--gold);padding:16px 20px;margin-bottom:28px;background:var(--bg2);">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--ink);line-height:1.55;margin-bottom:6px;">"You cannot think your way out of a biological block."</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);">The Biology of Weight Loss</div>
+      </div>
+      <p class="switch-body">The calorie-centric model is built on deprivation. It confirms the belief that suffering is the price of results — which is both psychologically damaging and biologically incorrect. The Switch replaces this entirely. Insulin is controlled first, which unlocks the body's ability to use fat for fuel. Energy stabilises. Cravings resolve. Fat loss becomes possible again — not through restriction, but because the body is finally working with you. Clients feel good while they change — which is what makes the change last.</p>
+    </div>
+    <div class="switch-cards reveal">
+      <div class="switch-card">
+        <div class="sc-n">Step 01 · The Mechanism</div>
+        <div class="sc-title">Control Insulin</div>
+        <div class="sc-desc">When insulin is controlled, the body stops storing fat and starts using it for fuel. Energy becomes stable rather than dependent on the next meal or the next coffee. This is the biological foundation everything else is built on.</div>
+      </div>
+      <div class="switch-card">
+        <div class="sc-n">Step 02 · The Frame</div>
+        <div class="sc-title">Nourishment First</div>
+        <div class="sc-desc">Not about eating less. About eating in a way that eliminates cravings and energy dips at the source. Clients feel genuinely good changing their nutrition — often for the first time in years. That feeling is what makes it sustainable.</div>
+      </div>
+      <div class="switch-card">
+        <div class="sc-n">Step 03 · The Protocol</div>
+        <div class="sc-title">Three Levers</div>
+        <div class="sc-desc">Control carbohydrates. Prioritise protein. Don't fear fat — it is essential for brain function, cellular health, and sustained energy. The outdated low-fat guidelines that kept you stuck are replaced with what the science actually shows.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="about-left reveal">
+      <div class="eyebrow-light">About Darren</div>
+      <div class="about-name">Darren<br>Tebbenham</div>
+      <div class="about-quals">BSc, MSc</div>
+      <div class="about-subtitle">Behaviour Change Coach · Author · Former University Lecturer</div>
+      <div class="about-body">
+        <p>I spent the first part of my career in education — studying sport and exercise psychology to Masters level, then lecturing it to degree-level student teachers for three years. <strong>Teaching the psychology of how people change</strong> before ever applying it in a coaching room.</p>
+        <p>The last twenty years have been entirely applied. Training personal trainers and coaches around the world. Working directly with clients at every level of complexity — from people who've simply never found an approach that works, to clinical cases involving obesity, type 2 diabetes, and post-bariatric support.</p>
+        <p>What I've built isn't based on one model or one book. <strong>It's built from twenty years of watching what actually changes people</strong> — and what doesn't. The 2.0 Method is the distillation of that.</p>
+        <p>I wrote The Psychology of Weight Loss because the gap between knowing and doing deserved a proper explanation. Not a motivation book. An honest account of how the brain works under pressure — and what to do about it.</p>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <ul class="about-credentials">
+        <li>BSc Sport and Exercise Science · MSc Sport and Exercise Psychology</li>
+        <li>Three years as a university lecturer in Exercise Psychology — teaching degree-level student teachers</li>
+        <li>Personal trainer and nutrition coach — two decades of direct client work</li>
+        <li>Trained 3,000+ personal trainers and coaches across the UK and internationally</li>
+        <li>Clinical experience: obesity, type 2 diabetes, bariatric pre and post-surgery</li>
+        <li>Two published books on the psychology and biology of weight loss</li>
+      </ul>
+      <div class="about-book">
+        <div class="ab-label">The Book</div>
+        <div class="ab-title">The Psychology of Weight Loss</div>
+        <div class="ab-sub">A real-life guide to weight loss that works with your brain, not against it. Available free at dt.coach/psychology — the foundation of everything in the 2.0 Method.</div>
+      </div>
+      <div class="about-book" style="margin-top:12px;">
+        <div class="ab-label">The Podcast</div>
+        <div class="ab-title">Clarity · Vision · Focus</div>
+        <div class="ab-sub">A three-part series that takes you through the complete psychological journey — from honest self-awareness to a vivid future self to the habits that make it permanent. Free. Available wherever you listen.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PODCAST SECTION -->
+<section style="background:var(--bg);padding:80px 48px;">
+  <div class="section-inner">
+    <div class="reveal" style="margin-bottom:52px;">
+      <div class="eyebrow">The Podcast</div>
+      <div class="rule-gold"></div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:16px;">Before the call.<br><em>Start here.</em></h2>
+      <p style="font-size:14px;line-height:1.85;color:var(--muted);max-width:580px;">The podcast takes you through the psychological journey of the 2.0 Method in three parts. Each part has five sessions with mini-worksheets. It's free. And the people who arrive at the diagnostic call having listened are consistently further along — clearer, more honest, more ready.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;" class="reveal">
+      <div style="background:var(--dark);padding:36px 30px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Part One</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--cream);margin-bottom:14px;">Clarity</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.82);line-height:1.75;margin-bottom:20px;">Getting honest before getting started. Five sessions covering what motivation actually is, your truth, your stories, your self-talk, and how your perspective creates your reality.</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Motivation</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Truth</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Stories</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Self-Talk</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Perspective</div>
+        </div>
+      </div>
+      <div style="background:var(--dark);padding:36px 30px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Part Two</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--cream);margin-bottom:14px;">Vision</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.82);line-height:1.75;margin-bottom:20px;">Building You 2.0 before you become them. Your vision, your why, your future self defined, The Code, and a letter from your future self to guide you through the work.</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Vision</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Why</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Future Self 2.0 Defined</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>The Code</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Letter from Your Future Self</div>
+        </div>
+      </div>
+      <div style="background:var(--dark);padding:36px 30px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Part Three</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--cream);margin-bottom:14px;">Focus</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.82);line-height:1.75;margin-bottom:20px;">Embedding the change as identity. The long game, new stories and priorities, celebrating daily wins, your declaration of intent, and putting it all together permanently.</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>The Long Game</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>New Stories and Priorities</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Celebrating Your Daily Wins</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>Your Declaration of Intent</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;color:rgba(250,247,242,0.72);display:flex;gap:8px;"><span style="color:var(--gold-light);">—</span>The How — Putting It Together</div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:300;color:var(--muted);margin-top:32px;" class="reveal">Free. Available wherever you listen. Each session includes a mini-worksheet. <strong style="color:var(--ink);">Start with the part that matches your pattern.</strong></p>
+  </div>
+</section>
+
+<!-- PROGRAMMES -->
+<section class="programmes-section" id="programmes">
+  <div class="section-inner">
+    <div class="prog-header reveal">
+      <div class="eyebrow">Work With Darren</div>
+      <div class="rule-gold center"></div>
+      <h2 class="prog-headline">Two ways to work.<br><em>One method.</em></h2>
+      <p class="prog-sub">Both programmes run the complete 2.0 Method — The Code, The Shift, The Switch, and The Rewrite. The difference is pace, proximity, and depth of access.</p>
+    </div>
+    <div class="prog-cards reveal">
+      <div class="prog-card">
+        <div class="prog-type">Group Programme</div>
+        <div class="prog-name">The Inside-Out Programme</div>
+        <div class="prog-duration">10 weeks · Cohort of 8–12 · Online</div>
+        <ul class="prog-includes">
+          <li>10 × 90-minute live group sessions with Darren</li>
+          <li>The complete 2.0 Method — The Code, The Shift, The Switch, The Rewrite</li>
+          <li>Your personal 2.0 Profile completed in week one</li>
+          <li>The Question Stack and visualisation meditations throughout</li>
+          <li>Weekly structured homework and reflection tools</li>
+          <li>Private group channel for between-session support</li>
+          <li>90-day post-programme plan built in week ten</li>
+        </ul>
+        <div class="prog-price">From <strong>£1,497</strong> per person</div>
+        <a href="#call" class="btn-prog">Apply for the Next Cohort →</a>
+      </div>
+      <div class="prog-card featured">
+        <div class="prog-type">1:1 Coaching</div>
+        <div class="prog-name">Inside-Out Intensive</div>
+        <div class="prog-duration">3 or 6 months · Fully bespoke · Direct access</div>
+        <ul class="prog-includes">
+          <li>Fortnightly 60-minute sessions directly with Darren</li>
+          <li>Deep behavioural assessment and full pattern profiling</li>
+          <li>The complete 2.0 Method built entirely around your specific life</li>
+          <li>The Question Stack and visualisation meditations used live in session</li>
+          <li>WhatsApp access for in-the-moment support</li>
+          <li>Biological protocol tailored to your history and physiology</li>
+          <li>Suitable for clinical complexity — obesity, diabetes, post-bariatric</li>
+        </ul>
+        <div class="prog-price">From <strong>£4,000</strong> · 3-month programme</div>
+        <a href="https://www.dt.coach/yourcall" class="btn-prog">Book a Diagnostic Call</a>
+      </div>
+    </div>
+    <p class="prog-note reveal">Not sure which is right for you? <strong>The diagnostic call will tell you.</strong> It's free, 30 minutes, and you'll leave with clarity regardless of whether we work together.</p>
+  </div>
+</section>
+
+<!-- OUTCOME -->
+<section class="outcome-section">
+  <div class="section-inner">
+    <div class="outcome-grid">
+      <div class="outcome-left reveal">
+        <div class="eyebrow">You 2.0</div>
+        <div class="rule-gold"></div>
+        <h2 class="outcome-headline">Not just lighter.<br><em>The real you —<br>back.</em></h2>
+        <div class="outcome-body">
+          <p>The goal of the 2.0 Method is not a number on a scale. It's the version of you who no longer carries this as a problem. Who is confident again in their own skin. Who enjoys food more, not less.</p>
+          <p>The weight lifts not just from your body but from around your neck — the quiet, persistent burden of a problem that's been there so long it feels like part of who you are.</p>
+          <p><strong>You were never broken. You were never lazy. You were never weak. You were responding exactly as a human brain responds under pressure.</strong> The solution was never stricter control. It was understanding.</p>
+          <p>Easy is earned. And once it's earned, it stays.</p>
+        </div>
+      </div>
+      <div class="outcome-right reveal">
+        <div class="outcome-cards">
+          <div class="outcome-card"><div class="oc-label">Psychologically</div><div class="oc-text">No longer fighting yourself. The pattern has been seen, named, and changed. Health is not a struggle — it is simply who you are. The negotiation is over.</div></div>
+          <div class="outcome-card"><div class="oc-label">Biologically</div><div class="oc-text">Running on fat, not fear. Energy is high and stable. You lose weight with vitality, not despite it. The biological trap of carbohydrate dependency — broken for good.</div></div>
+          <div class="outcome-card"><div class="oc-label">Daily Life</div><div class="oc-text">Confident again in your own skin. Clothes fit. Food is genuinely enjoyed. Health is no longer the limiting factor in performing at your best in every area of your life.</div></div>
+          <div class="outcome-card"><div class="oc-label">Permanently</div><div class="oc-text">Maintenance requires no willpower — it no longer conflicts with your identity. Consistency becomes who you are, not something you do. You 2.0 isn't a new you. It's the real you — back.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="forwho-section">
+  <div class="forwho-inner">
+    <div class="reveal">
+      <div class="eyebrow light">Who This Is For</div>
+      <div class="rule-gold"></div>
+      <h2 class="forwho-headline">The 2.0 Method is for people<br>who are <em>done with outside-in.</em></h2>
+    </div>
+    <div class="forwho-cols reveal">
+      <div class="forwho-col yes">
+        <div class="forwho-col-label">This is for you if</div>
+        <ul class="forwho-list">
+          <li>You have Clarity about the problem but haven't yet built the Vision or the Focus to change it permanently</li>
+          <li>You are a professional, clinician, or high achiever who has tried everything and is tired of starting over</li>
+          <li>You understand the science but cannot consistently apply it to yourself</li>
+          <li>You recognise yourself in one of the four patterns</li>
+          <li>You are willing to look honestly at your stories, your self-talk, and your perspective — not just follow another plan</li>
+          <li>You see changing your weight as a process of growth, not discipline or willpower</li>
+          <li>You have been referred by a GP or specialist and need more than a standard programme</li>
+          <li>You are ready to move from wanting this to deciding it — not when conditions are perfect, but now</li>
+        </ul>
+      </div>
+      <div class="forwho-col no">
+        <div class="forwho-col-label">This is not for you if</div>
+        <ul class="forwho-list">
+          <li>You are looking for a meal plan, a quick fix, or a 28-day challenge</li>
+          <li>You want to be told what to eat without understanding why you eat it</li>
+          <li>You are not prepared to get honest about your stories, your self-talk, and what's actually driving the pattern</li>
+          <li>You believe the problem is purely physical and the psychological work is irrelevant</li>
+          <li>You need a clean run and perfect conditions before you can begin</li>
+          <li>You are at the wanting stage and not yet ready to move to deciding</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="call">
+  <div class="section-inner">
+    <div class="cta-inner reveal">
+      <div class="eyebrow">The Next Step</div>
+      <div class="rule-gold center"></div>
+      <h2 class="cta-headline">Book your free<br><em>diagnostic call.</em></h2>
+      <p class="cta-body">Thirty minutes. No pitch. No obligation. You will leave with clarity on exactly what's driving your pattern — and whether the 2.0 Method is the right fit. <strong>Even if we don't work together, the call will be worth your time.</strong></p>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--muted);margin-bottom:32px;line-height:1.6;">"When biology is on your side, consistency stops being a personality trait<br>and becomes the natural result."</div>
+      <div class="cta-buttons">
+        <a href="https://www.dt.coach/yourcall" class="btn-gold">Book a Diagnostic Call</a>
+        <a href="https://www.dt.coach/profile" class="btn-outline">Take the Free 2.0 Profile First</a>
+      </div>
+      <p class="cta-small">Calls typically available within 2–3 weeks. If you're considering it, book now.</p>
+      <div class="cta-what">
+        <div class="cta-what-item"><div class="cwi-num">01</div><div class="cwi-label">On the call</div><div class="cwi-text">We identify exactly which pattern is driving your behaviour and which blind spots are keeping you stuck. You'll hear things about yourself that land.</div></div>
+        <div class="cta-what-item"><div class="cwi-num">02</div><div class="cwi-label">After the call</div><div class="cwi-text">A personal summary of what we discussed, the details of both programmes, and a clear recommendation for your specific situation.</div></div>
+        <div class="cta-what-item"><div class="cwi-num">03</div><div class="cwi-label">If we work together</div><div class="cwi-text">We begin with The Code. Move through The Shift. Complete The Switch. Embed The Rewrite. And you become who you've already decided to be.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <strong>Darren Tebbenham</strong>
+      <span class="quals">BSc, MSc</span>
+      Behaviour Change Coach · Author<br>
+      Former University Lecturer<br>
+      Trainer of 3,000+ Coaches Worldwide
+    </div>
+    <div class="footer-center">
+      <div class="footer-logo">dt<span>.</span>coach</div>
+      <div class="footer-tagline">Inside-Out Transformation</div>
+    </div>
+    <div class="footer-right">
+      <a href="https://www.dt.coach">www.dt.coach</a><br>
+      Group Programme · 1:1 Coaching<br>
+      Clinical Referrals<br>
+      <a href="https://www.dt.coach/psychology">Free Books</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  const menu=document.getElementById('navMenu');
+  menu.classList.toggle('open');
+}
+// Close menu on scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navMenu').classList.remove('open');
+});
+
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),60);obs.unobserve(e.target);}
+  });
+},{threshold:0.08});
+reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
