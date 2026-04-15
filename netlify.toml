@@ -2,3 +2,8 @@
   publish = "."
   functions = "netlify/functions"
 
+[[redirects]]
+  from = "/clinicalreferrals"
+  to = "/clinical-referrals.html"
+  status = 200
+

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Referrals — Darren Tebbenham · The 2.0 Method</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#151412;--bg:#faf7f2;--bg2:#f3ede3;
+  --dark:#0e0d0b;--dark2:#1a1814;
+  --gold:#a8813a;--gold-light:#c9a55a;
+  --gold-border:rgba(168,129,58,0.25);
+  --cream:#faf7f2;--muted:#8a7f6e;--rule:#ddd5c4;--white:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;overflow-x:hidden;font-size:16px;line-height:1.8;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(250,247,242,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink);}
+.nav-logo span{color:var(--gold);font-weight:300;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-link{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-link:hover{color:var(--ink);}
+.nav-cta{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink);background:none;border:1px solid var(--ink);padding:10px 22px;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.nav-cta:hover{background:var(--ink);color:var(--cream);}
+
+/* HERO */
+.hero{min-height:60vh;display:flex;align-items:center;padding:120px 48px 80px;background:var(--dark);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.hero-inner{max-width:900px;margin:0 auto;width:100%;}
+.hero-label{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold-light);margin-bottom:24px;animation:fadeUp 0.7s ease both;}
+.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,58px);font-weight:600;line-height:1.1;color:var(--cream);margin-bottom:24px;animation:fadeUp 0.7s 0.1s ease both;}
+.hero-headline em{font-style:italic;color:var(--gold-light);}
+.hero-sub{font-size:16px;line-height:1.85;color:rgba(250,247,242,0.65);max-width:680px;animation:fadeUp 0.7s 0.18s ease both;}
+.hero-sub strong{color:rgba(250,247,242,0.9);}
+
+/* SECTIONS */
+section{padding:88px 48px;}
+.section-inner{max-width:1000px;margin:0 auto;}
+.section-inner.narrow{max-width:760px;}
+.eyebrow{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);}
+.rule-gold{width:40px;height:1px;background:var(--gold);margin:16px 0;}
+.rule-gold.center{margin:16px auto;}
+
+/* THE GAP */
+.gap-section{background:var(--bg);}
+.gap-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+.gap-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,42px);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:20px;}
+.gap-headline em{font-style:italic;color:var(--gold);}
+.gap-body{font-size:15px;line-height:1.9;color:var(--muted);}
+.gap-body p{margin-bottom:16px;}
+.gap-body strong{color:var(--ink);}
+.gap-stats{display:flex;flex-direction:column;gap:0;}
+.stat-item{padding:24px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:center;}
+.stat-item:first-child{border-top:1px solid var(--rule);}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold);line-height:1;}
+.stat-text{font-size:14px;line-height:1.65;color:var(--ink);}
+.stat-text strong{display:block;font-weight:700;margin-bottom:2px;}
+
+/* WHAT'S MISSING */
+.missing-section{background:var(--bg2);}
+.missing-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,42px);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:16px;}
+.missing-headline em{font-style:italic;color:var(--gold);}
+.missing-intro{font-size:15px;line-height:1.85;color:var(--muted);max-width:680px;margin-bottom:52px;}
+.missing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.missing-card{background:var(--bg);padding:32px 28px;border-top:3px solid var(--gold);}
+.mc-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.mc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:12px;}
+.mc-body{font-size:13.5px;line-height:1.75;color:var(--muted);}
+
+/* THE APPROACH */
+.approach-section{background:var(--dark);}
+.approach-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,42px);font-weight:600;line-height:1.2;color:var(--cream);margin-bottom:16px;}
+.approach-headline em{font-style:italic;color:var(--gold-light);}
+.approach-intro{font-size:15px;line-height:1.85;color:rgba(250,247,242,0.6);max-width:680px;margin-bottom:52px;}
+.approach-steps{display:flex;flex-direction:column;gap:2px;}
+.approach-step{display:grid;grid-template-columns:56px 1fr;gap:0;background:var(--dark2);}
+.as-number{background:var(--ink);display:flex;align-items:center;justify-content:center;padding:28px 14px;}
+.as-num-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold-light);writing-mode:vertical-rl;transform:rotate(180deg);}
+.as-content{padding:28px 36px;}
+.as-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.as-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--cream);margin-bottom:10px;}
+.as-desc{font-size:14px;line-height:1.8;color:rgba(250,247,242,0.6);}
+
+/* SUITABLE FOR */
+.suitable-section{background:var(--bg);}
+.suitable-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+.suitable-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:16px;}
+.suitable-headline em{font-style:italic;color:var(--gold);}
+.suitable-body{font-size:15px;line-height:1.9;color:var(--muted);}
+.suitable-body p{margin-bottom:14px;}
+.suitable-list{display:flex;flex-direction:column;gap:0;}
+.suitable-item{padding:18px 0;border-bottom:1px solid var(--rule);display:flex;gap:16px;align-items:flex-start;}
+.suitable-item:first-child{border-top:1px solid var(--rule);}
+.suitable-check{width:20px;height:20px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.suitable-check::after{content:'✓';font-size:9px;color:var(--gold);font-family:'Montserrat',sans-serif;}
+.suitable-text{font-size:14px;line-height:1.7;color:var(--ink);}
+.suitable-sub{font-size:12px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);margin-top:3px;line-height:1.6;}
+
+/* NOT SUITABLE */
+.not-suitable{background:var(--bg2);border:1px solid var(--rule);padding:28px 32px;margin-top:32px;}
+.ns-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.ns-body{font-size:13.5px;line-height:1.75;color:var(--muted);}
+
+/* ABOUT */
+.about-section{background:var(--bg2);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+.about-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:16px;}
+.about-body{font-size:15px;line-height:1.9;color:var(--muted);}
+.about-body p{margin-bottom:14px;}
+.about-body strong{color:var(--ink);}
+.cred-list{list-style:none;display:flex;flex-direction:column;gap:0;}
+.cred-item{padding:16px 0;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:flex-start;}
+.cred-item:first-child{border-top:1px solid var(--rule);}
+.cred-dash{color:var(--gold);flex-shrink:0;font-size:14px;margin-top:1px;}
+.cred-text{font-size:14px;line-height:1.65;color:var(--ink);}
+.cred-text span{display:block;font-size:12px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);margin-top:2px;}
+
+/* WHAT TO EXPECT */
+.expect-section{background:var(--bg);}
+.expect-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,38px);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:16px;}
+.expect-intro{font-size:15px;line-height:1.85;color:var(--muted);max-width:680px;margin-bottom:48px;}
+.expect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.expect-card{background:var(--bg2);padding:28px 24px;border-top:2px solid var(--gold);}
+.ec-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:10px;}
+.ec-title{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ec-body{font-size:13.5px;line-height:1.75;color:var(--ink);}
+
+/* CTA */
+.cta-section{background:var(--dark);padding:100px 48px;}
+.cta-inner{max-width:760px;margin:0 auto;}
+.cta-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,48px);font-weight:600;line-height:1.15;color:var(--cream);margin-bottom:20px;}
+.cta-headline em{font-style:italic;color:var(--gold-light);}
+.cta-body{font-size:15px;line-height:1.9;color:rgba(250,247,242,0.6);margin-bottom:40px;}
+.cta-body strong{color:rgba(250,247,242,0.9);}
+.cta-options{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+.cta-option{padding:28px 28px;border:1px solid var(--gold-border);background:var(--dark2);}
+.co-label{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.co-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--cream);margin-bottom:8px;}
+.co-body{font-size:13px;font-family:'Montserrat',sans-serif;font-weight:300;color:rgba(250,247,242,0.5);line-height:1.65;margin-bottom:16px;}
+.btn-gold{display:inline-flex;align-items:center;justify-content:center;background:var(--gold);color:var(--white);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 24px;border:none;cursor:pointer;transition:all 0.25s;text-decoration:none;width:100%;}
+.btn-gold:hover{background:var(--cream);color:var(--ink);}
+.btn-outline-light{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:var(--gold-light);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 24px;border:1px solid var(--gold-light);cursor:pointer;transition:all 0.25s;text-decoration:none;width:100%;}
+.btn-outline-light:hover{background:var(--gold);border-color:var(--gold);color:var(--white);}
+.cta-note{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.35);font-style:italic;text-align:center;}
+
+/* DOWNLOAD */
+.download-box{background:rgba(168,129,58,0.08);border:1px solid var(--gold-border);padding:28px 32px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.db-text{}
+.db-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--cream);margin-bottom:4px;}
+.db-sub{font-size:12px;font-family:'Montserrat',sans-serif;font-weight:300;color:rgba(250,247,242,0.45);line-height:1.6;}
+.btn-download{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--gold-light);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;border:1px solid var(--gold-light);cursor:pointer;transition:all 0.25s;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.btn-download:hover{background:var(--gold);border-color:var(--gold);color:var(--white);}
+
+/* FOOTER */
+footer{background:var(--ink);padding:48px 48px;}
+.footer-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:center;}
+.footer-left{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;line-height:1.9;color:rgba(250,247,242,0.38);}
+.footer-left strong{display:block;font-weight:600;color:rgba(250,247,242,0.65);font-size:12px;margin-bottom:3px;}
+.footer-left .quals{color:var(--gold-light);display:block;margin-bottom:2px;}
+.footer-center{text-align:center;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cream);}
+.footer-logo span{color:var(--gold-light);font-weight:300;}
+.footer-tagline{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:rgba(250,247,242,0.25);margin-top:5px;}
+.footer-right{text-align:right;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;line-height:1.9;color:rgba(250,247,242,0.38);}
+.footer-right a{color:var(--gold-light);text-decoration:none;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  section{padding:64px 20px;}
+  .hero{padding:100px 20px 64px;}
+  .gap-grid,.suitable-grid,.about-grid,.cta-options{grid-template-columns:1fr;}
+  .missing-grid,.expect-grid{grid-template-columns:1fr;}
+  .approach-step{grid-template-columns:1fr;}
+  .as-number{display:none;}
+  .as-content{padding:24px 20px;}
+  .footer-inner{grid-template-columns:1fr;text-align:center;}
+  .footer-right{text-align:center;}
+  .download-box{flex-direction:column;text-align:center;}
+}
+@media(max-width:600px){
+  .hero-headline{font-size:clamp(30px,8vw,44px);}
+  .gap-headline,.missing-headline,.approach-headline,.suitable-headline,.about-headline,.expect-headline,.cta-headline{font-size:clamp(24px,7vw,34px);}
+  .gap-body,.suitable-body,.about-body,.cta-body{font-size:15px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Inside-Out <span>Transformation</span></div>
+  <div class="nav-links">
+    <a href="https://www.dt.coach/start" class="nav-link">The 2.0 Method</a>
+    <a href="https://www.dt.coach/profile" class="nav-link">2.0 Profile</a>
+    <a href="https://www.dt.coach/psychology" class="nav-link">Free Books</a>
+  </div>
+  <a href="#enquire" class="nav-cta">Discuss a Referral</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Clinical & Professional Referrals · Darren Tebbenham, BSc, MSc</div>
+    <h1 class="hero-headline">For patients who have<br>exhausted the<br><em>standard pathway.</em></h1>
+    <p class="hero-sub">Most weight management interventions address behaviour, nutrition, and medication. <strong>Very few address the psychological patterns and biological adaptations that keep patients stuck</strong> — even after significant clinical input. The 2.0 Method fills that gap.</p>
+  </div>
+</div>
+
+<!-- THE GAP -->
+<section class="gap-section">
+  <div class="section-inner">
+    <div class="gap-grid">
+      <div class="reveal">
+        <div class="eyebrow">The Clinical Gap</div>
+        <div class="rule-gold"></div>
+        <h2 class="gap-headline">What conventional programmes<br><em>don't address.</em></h2>
+        <div class="gap-body">
+          <p>Weight management interventions — dietary advice, exercise referral, GLP-1 medication, bariatric surgery — address the physiological and behavioural dimensions of obesity and metabolic disease.</p>
+          <p>What they rarely address is the psychological substrate underneath the behaviour. The identity. The patterns. The self-talk. The blind spots that have been running quietly underneath every intervention.</p>
+          <p><strong>Without addressing this layer, relapse is not a failure of willpower. It's a predictable outcome.</strong> The body changes. The psychology doesn't. And over time, the psychology wins.</p>
+          <p>The 2.0 Method addresses this missing layer directly — and works best as a complement to, rather than a replacement for, clinical care.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="gap-stats">
+          <div class="stat-item">
+            <div class="stat-num">86.5%</div>
+            <div class="stat-text"><strong>of gastric bypass patients</strong> regain more than 10% of maximum weight loss within five years of nadir<br><span style="font-size:11px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);">LABS Study · International Journal of Obesity · 2024</span></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">67%</div>
+            <div class="stat-text"><strong>of prior weight loss regained</strong> within one year of stopping semaglutide — in participants who completed 68 weeks of treatment<br><span style="font-size:11px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);">STEP 1 Trial Extension · Wilding et al. · PMC9542252</span></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">95%</div>
+            <div class="stat-text"><strong>of conventional diets</strong> fail long term — not because of the dietary approach but because of unaddressed psychological drivers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">20+</div>
+            <div class="stat-text"><strong>years of applied work</strong> at the intersection of psychology, behaviour change, and weight management</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">45%</div>
+            <div class="stat-text"><strong>of weight lost on semaglutide</strong> comes from lean mass rather than fat in the STEP 1 trial — not purely fat loss<br><span style="font-size:11px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);">STEP 1 Trial · Wilding et al. · New England Journal of Medicine · 2021</span></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">65%</div>
+            <div class="stat-text"><strong>of patients without type 2 diabetes</strong> discontinue GLP-1 medication within one year in real-world settings<br><span style="font-size:11px;font-family:'Montserrat',sans-serif;font-weight:300;color:var(--muted);">Rodriguez et al. · JAMA Network Open · 2025 · n=125,474</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S MISSING -->
+<section class="missing-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">The Three Layers</div>
+      <div class="rule-gold"></div>
+      <h2 class="missing-headline">What the 2.0 Method<br><em>addresses specifically.</em></h2>
+      <p class="missing-intro">The framework addresses three dimensions that standard clinical weight management programmes typically do not have the resource or remit to cover in sufficient depth.</p>
+    </div>
+    <div class="missing-grid reveal">
+      <div class="missing-card">
+        <div class="mc-label">Layer One</div>
+        <div class="mc-title">The Psychological Patterns</div>
+        <div class="mc-body">The four patterns — Perpetual Negotiator, Resilient Restarter, Weekday Warrior, Clean Slater — each require specific psychological intervention. Most patients present with a primary pattern that has never been named or addressed. The 2.0 Profile assessment identifies this before the first session.</div>
+      </div>
+      <div class="missing-card">
+        <div class="mc-label">Layer Two</div>
+        <div class="mc-title">The Identity Work</div>
+        <div class="mc-body">Behaviour change that doesn't reach the level of identity reverts under stress. The 2.0 Method specifically addresses the gap between "doing healthy things" and "being a healthy person" — the distinction that determines whether change is temporary or permanent.</div>
+      </div>
+      <div class="missing-card">
+        <div class="mc-label">Layer Three</div>
+        <div class="mc-title">The Biological Reset</div>
+        <div class="mc-body">Insulin control as the primary lever — moving patients from carbohydrate dependency to fat-fuel metabolism. A nourishment-centred rather than calorie-restriction approach that reduces cravings, stabilises energy, and makes sustained compliance significantly more achievable.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE APPROACH -->
+<section class="approach-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow light" style="color:var(--gold-light);">The Framework</div>
+      <div class="rule-gold"></div>
+      <h2 class="approach-headline">How the 2.0 Method<br><em>works in sequence.</em></h2>
+      <p class="approach-intro">The four components run in a specific order. Psychology before biology. Identity before habit. This sequence is not arbitrary — it reflects the evidence base for what makes behaviour change durable in complex cases.</p>
+    </div>
+    <div class="approach-steps reveal">
+      <div class="approach-step">
+        <div class="as-number"><div class="as-num-text">01</div></div>
+        <div class="as-content">
+          <div class="as-label">Component One · Foundation</div>
+          <div class="as-title">The Code</div>
+          <div class="as-desc">Three psychological commitments that make everything else possible. Addresses the primary barrier in most complex cases: the patient is doing this for external reasons — compliance, family pressure, clinical advice — rather than from internal ownership. Until this shifts, all other interventions are limited.</div>
+        </div>
+      </div>
+      <div class="approach-step">
+        <div class="as-number"><div class="as-num-text">02</div></div>
+        <div class="as-content">
+          <div class="as-label">Component Two · Transformation</div>
+          <div class="as-title">The Shift</div>
+          <div class="as-desc">A two-stage psychological transformation. Stage 1 — The Mirror: the patient sees their pattern clearly, without defence, often for the first time. Stage 2 — The Vision: a vivid, emotionally real image of the transformed self that the brain begins to treat as a reference point. Visualisation and structured coaching questions are the primary tools.</div>
+        </div>
+      </div>
+      <div class="approach-step">
+        <div class="as-number"><div class="as-num-text">03</div></div>
+        <div class="as-content">
+          <div class="as-label">Component Three · Biology</div>
+          <div class="as-title">The Switch</div>
+          <div class="as-desc">Insulin control as the primary biological lever. Transitioning from carbohydrate dependency to fat-fuel metabolism using a nourishment-centred protocol — control carbohydrates, prioritise protein, dietary fat not restricted. Energy stabilises, cravings reduce, and the patient experiences the process as additive rather than restrictive.</div>
+        </div>
+      </div>
+      <div class="approach-step">
+        <div class="as-number"><div class="as-num-text">04</div></div>
+        <div class="as-content">
+          <div class="as-label">Component Four · Permanence</div>
+          <div class="as-title">The Rewrite</div>
+          <div class="as-desc">Habit installation at the level of identity rather than behaviour. Using evidence accumulation, anchor habits, and identity reframing to embed the new pattern in the automatic brain. The goal is a patient who maintains without effort because maintenance no longer conflicts with who they believe they are.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUITABLE FOR -->
+<section class="suitable-section">
+  <div class="section-inner">
+    <div class="suitable-grid">
+      <div class="reveal">
+        <div class="eyebrow">Referral Criteria</div>
+        <div class="rule-gold"></div>
+        <h2 class="suitable-headline">Patients most likely<br>to <em>benefit.</em></h2>
+        <div class="suitable-body">
+          <p>The 2.0 Method is not appropriate for all patients. It works best with those who have sufficient insight and motivation to engage with psychological work, and who have typically already tried standard approaches without sustained success.</p>
+          <p>It is most effective as a complement to existing clinical management — not a replacement for medical treatment where that is indicated.</p>
+        </div>
+        <div class="not-suitable">
+          <div class="ns-label">Not recommended where</div>
+          <div class="ns-body">Active eating disorder is present · Acute mental health crisis requiring primary psychiatric intervention · Patient is unwilling to engage with psychological exploration · Pre-contemplative stage — not yet ready to consider psychological factors</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="suitable-list">
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">Patients with obesity who have failed multiple dietary and lifestyle interventions</div>
+              <div class="suitable-sub">Particularly where insight into emotional or psychological drivers is present</div>
+            </div>
+          </div>
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">Pre-bariatric surgery — psychological preparation</div>
+              <div class="suitable-sub">Addressing patterns and identity before surgical intervention significantly improves long-term outcomes</div>
+            </div>
+          </div>
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">Post-bariatric — weight regain or compliance difficulties</div>
+              <div class="suitable-sub">Where the surgical outcome has not been maintained and psychological drivers have reasserted</div>
+            </div>
+          </div>
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">Type 2 diabetes — lifestyle modification support</div>
+              <div class="suitable-sub">The insulin-control protocol is directly relevant to metabolic management alongside clinical care</div>
+            </div>
+          </div>
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">GLP-1 medication — during or post-treatment</div>
+              <div class="suitable-sub">Building the psychological and biological foundation that sustains outcomes when medication is reduced or stopped</div>
+            </div>
+          </div>
+          <div class="suitable-item">
+            <div class="suitable-check"></div>
+            <div>
+              <div class="suitable-text">High-achieving professionals with metabolic health concerns</div>
+              <div class="suitable-sub">Where standard approaches have been tried and failed and the patient has insight into the psychological dimension</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT DARREN -->
+<section class="about-section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="eyebrow">About Darren Tebbenham</div>
+        <div class="rule-gold"></div>
+        <h2 class="about-headline">Background &amp; credentials</h2>
+        <div class="about-body">
+          <p>My work sits at the intersection of applied psychology, behaviour change science, and metabolic health. I am not a clinician — I work alongside clinical teams rather than within them. My role is the psychological and behavioural layer that clinical programmes typically cannot provide at the depth required for complex cases.</p>
+          <p>I am happy to liaise with referring clinicians, provide progress summaries where appropriate, and work within a coordinated care framework. <strong>A GP or specialist liaison letter is available for all clinical referrals on request.</strong></p>
+        </div>
+      </div>
+      <div class="reveal">
+        <ul class="cred-list">
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">BSc Sport and Exercise Science · MSc Sport and Exercise Psychology
+              <span>Academic foundation in the psychology of human performance and behaviour change</span>
+            </div>
+          </li>
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">Three years as a university lecturer in Exercise Psychology
+              <span>Teaching degree-level student teachers — translating psychological science into applied practice</span>
+            </div>
+          </li>
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">20+ years as a personal trainer, nutrition coach, and behaviour change practitioner
+              <span>Direct client work across the full spectrum of weight and metabolic complexity</span>
+            </div>
+          </li>
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">Trained 3,000+ personal trainers and coaches internationally
+              <span>Applied psychological principles delivered to the next generation of practitioners</span>
+            </div>
+          </li>
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">Author — The Psychology of Weight Loss and The Biology of Weight Loss
+              <span>Both available free at dt.coach/psychology</span>
+            </div>
+          </li>
+          <li class="cred-item">
+            <div class="cred-dash">—</div>
+            <div class="cred-text">Clinical experience with obesity, type 2 diabetes, and post-bariatric cases
+              <span>Working alongside GPs, dietitians, and specialist teams</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT TO EXPECT -->
+<section class="expect-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">The Referral Process</div>
+      <div class="rule-gold"></div>
+      <h2 class="expect-headline">What happens after a referral.</h2>
+      <p class="expect-intro">The process is straightforward. No forms, no waiting lists, no complex onboarding. An initial conversation is the starting point for everything.</p>
+    </div>
+    <div class="expect-grid reveal">
+      <div class="expect-card">
+        <div class="ec-num">01</div>
+        <div class="ec-title">Initial Clinician Conversation</div>
+        <div class="ec-body">A brief call or email exchange to discuss the patient's presentation, relevant clinical context, and whether the 2.0 Method is likely to be appropriate. No referral form required.</div>
+      </div>
+      <div class="expect-card">
+        <div class="ec-num">02</div>
+        <div class="ec-title">Patient Diagnostic Call</div>
+        <div class="ec-body">A free 30-minute call directly with the patient. Assessment of their pattern type, readiness to engage with psychological work, and fit with the programme. Outcome fed back to referrer on request.</div>
+      </div>
+      <div class="expect-card">
+        <div class="ec-num">03</div>
+        <div class="ec-title">Programme and Liaison</div>
+        <div class="ec-body">Patient enters 1:1 coaching or group programme as appropriate. Progress summaries and GP liaison letters available throughout. I work within rather than around the clinical relationship.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="enquire">
+  <div class="cta-inner">
+    <div class="reveal">
+      <div class="eyebrow" style="color:var(--gold-light);">Get in Touch</div>
+      <div class="rule-gold"></div>
+      <h2 class="cta-headline">Discuss a referral<br><em>or make an enquiry.</em></h2>
+      <p class="cta-body">The best starting point is a brief conversation. No commitment required — just a discussion about whether the 2.0 Method is the right fit for your patient. <strong>All clinical enquiries are responded to within one working day.</strong></p>
+      <div class="cta-options">
+        <div class="cta-option">
+          <div class="co-label">For Clinicians</div>
+          <div class="co-title">Discuss a Referral</div>
+          <div class="co-body">A brief call to discuss a specific patient's presentation and whether the 2.0 Method is appropriate. Confidential. No obligation.</div>
+          <a href="https://tidycal.com/darrentebbenham/diagnostic" class="btn-gold">Book a Clinician Call</a>
+        </div>
+        <div class="cta-option">
+          <div class="co-label">For Patients</div>
+          <div class="co-title">Book a Diagnostic Call</div>
+          <div class="co-body">A free 30-minute call to identify your pattern and assess whether the 2.0 Method is the right next step. No pitch. Just clarity.</div>
+          <a href="https://tidycal.com/darrentebbenham/diagnostic" class="btn-outline-light">Book a Patient Call</a>
+        </div>
+      </div>
+      <div class="download-box">
+        <div class="db-text">
+          <div class="db-title">The 2.0 Method Framework</div>
+          <div class="db-sub">A one-page overview of the complete framework — suitable for sharing with colleagues or including in patient records. Download the PDF or view online.</div>
+        </div>
+        <a href="https://www.dt.coach/framework" class="btn-download">Download Framework PDF →</a>
+      </div>
+      <!-- B2B Practice/PCN Option -->
+      <div style="margin-top:32px;border-top:1px solid rgba(201,165,90,0.2);padding-top:32px;">
+        <div style="background:rgba(168,129,58,0.06);border:1px solid rgba(168,129,58,0.2);padding:28px 32px;">
+          <div style="font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;">For Practices, PCNs &amp; Trusts</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--cream);margin-bottom:12px;">Working with a practice, PCN, or trust?</div>
+          <p style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:300;color:rgba(250,247,242,0.6);line-height:1.8;margin-bottom:20px;max-width:580px;">If you're considering the 2.0 Method as a structured pathway for a cohort of patients — as part of a weight management service, post-bariatric support programme, or GLP-1 adjunct — I'd welcome a conversation about what that could look like for your practice or network.</p>
+          <a href="https://tidycal.com/darrentebbenham/diagnostic" style="display:inline-flex;align-items:center;justify-content:center;background:transparent;color:var(--gold-light);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;border:1px solid var(--gold-light);cursor:pointer;transition:all 0.25s;text-decoration:none;" onmouseover="this.style.background='var(--gold)';this.style.borderColor='var(--gold)';this.style.color='white';" onmouseout="this.style.background='transparent';this.style.borderColor='var(--gold-light)';this.style.color='var(--gold-light)';">Book a Practice Enquiry Call →</a>
+        </div>
+      </div>
+      <p class="cta-note" style="margin-top:24px;">All enquiries treated as confidential · dt.coach</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <strong>Darren Tebbenham</strong>
+      <span class="quals">BSc, MSc</span>
+      Behaviour Change Coach & Author<br>
+      Former University Lecturer in Exercise Psychology<br>
+      Trainer of 3,000+ Coaches Worldwide
+    </div>
+    <div class="footer-center">
+      <div class="footer-logo">Inside-Out <span>Transformation</span></div>
+      <div class="footer-tagline">dt.coach</div>
+    </div>
+    <div class="footer-right">
+      <a href="https://www.dt.coach/start">The 2.0 Method</a><br>
+      <a href="https://www.dt.coach/profile">2.0 Profile Assessment</a><br>
+      <a href="https://www.dt.coach/psychology">Free Books</a><br>
+      <a href="https://www.dt.coach">www.dt.coach</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),60);obs.unobserve(e.target);}
+  });
+},{threshold:0.08});
+reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
