@@ -19,7 +19,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Libre Baskerville',Georg
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(250,247,242,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--ink);white-space:nowrap;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--ink);white-space:nowrap;text-decoration:none;}
 .nav-logo span{color:var(--gold);font-weight:300;}
 .nav-links{display:flex;gap:32px;align-items:center;}
 .nav-link{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
@@ -149,7 +149,6 @@ section{padding:88px 48px;}
 
 /* DOWNLOAD */
 .download-box{background:rgba(168,129,58,0.08);border:1px solid var(--gold-border);padding:28px 32px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
-.db-text{}
 .db-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--cream);margin-bottom:4px;}
 .db-sub{font-size:12px;font-family:'Montserrat',sans-serif;font-weight:300;color:rgba(250,247,242,0.45);line-height:1.6;}
 .btn-download{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--gold-light);font-family:'Montserrat',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;border:1px solid var(--gold-light);cursor:pointer;transition:all 0.25s;text-decoration:none;white-space:nowrap;flex-shrink:0;}
@@ -186,10 +185,11 @@ footer{background:var(--ink);padding:48px 48px;}
   .footer-inner{grid-template-columns:1fr;text-align:center;}
   .footer-right{text-align:center;}
   .download-box{flex-direction:column;text-align:center;}
-  .nav-logo{font-size:17px;}
   .nav-cta{font-size:7.5px;letter-spacing:2.5px;padding:9px 18px;}
 }
 @media(max-width:600px){
+  nav{justify-content:flex-end;}
+  .nav-logo{display:none;}
   .hero-headline{font-size:clamp(30px,8vw,44px);}
   .gap-headline,.missing-headline,.approach-headline,.suitable-headline,.about-headline,.expect-headline,.cta-headline{font-size:clamp(24px,7vw,34px);}
   .gap-body,.suitable-body,.about-body,.cta-body{font-size:15px;}
@@ -199,12 +199,7 @@ footer{background:var(--ink);padding:48px 48px;}
 <body>
 
 <nav>
-  <div class="nav-logo">Inside-Out <span>Transformation</span></div>
-  <div class="nav-links">
-    <a href="sales-page-v3 (1).html" class="nav-link">The 2.0 Method</a>
-    <a href="profile/" class="nav-link">2.0 Profile</a>
-    <a href="https://www.dt.coach/psychology" class="nav-link">Free Books</a>
-  </div>
+  <a class="nav-logo" href="sales-page-v3 (1).html">Inside-Out <span>Transformation</span></a>
   <a href="#enquire" class="nav-cta">Discuss Referral</a>
 </nav>
 

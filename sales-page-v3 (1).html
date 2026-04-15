@@ -38,7 +38,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:fl
 .hero::before{display:none;}
 .hero-inner{width:100%;display:grid;grid-template-columns:1fr 1fr;align-items:center;}
 .hero-left{min-width:0;padding:80px 52px 80px 52px;background:var(--bg);}
-.method-badge{display:inline-block;border:1.5px solid var(--ink);padding:10px 28px;margin-bottom:16px;animation:fadeUp 0.7s ease both;max-width:100%;}
+.method-badge{display:inline-block;padding:10px 28px;margin-bottom:16px;animation:fadeUp 0.7s ease both;max-width:100%;position:relative;}
+.method-badge::before,.method-badge::after{content:'';position:absolute;inset:0;pointer-events:none;}
+/* "Broken box" frame (open sides) */
+.method-badge::before{
+  background:
+    /* top left segment */ linear-gradient(var(--ink),var(--ink)) left top/46% 1.5px no-repeat,
+    /* top right segment */ linear-gradient(var(--ink),var(--ink)) right top/46% 1.5px no-repeat,
+    /* bottom left segment */ linear-gradient(var(--ink),var(--ink)) left bottom/46% 1.5px no-repeat,
+    /* bottom right segment */ linear-gradient(var(--ink),var(--ink)) right bottom/46% 1.5px no-repeat,
+    /* left vertical segment */ linear-gradient(var(--ink),var(--ink)) left center/1.5px 100% no-repeat,
+    /* right vertical segment */ linear-gradient(var(--ink),var(--ink)) right center/1.5px 100% no-repeat;
+}
 .method-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--ink);letter-spacing:1px;line-height:1;white-space:nowrap;}
 .hero-eyebrow{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;animation:fadeUp 0.7s ease both;}
 .hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,66px);font-weight:600;line-height:1.1;color:var(--ink);margin-bottom:26px;animation:fadeUp 0.7s 0.1s ease both;}
@@ -340,7 +351,7 @@ footer{background:var(--dark);padding:56px 48px;}
   nav .nav-cta{display:none;}
   .nav-hamburger{display:flex;}
   section{padding:52px 16px;}
-  .hero-left{padding:44px 20px 40px 20px;}
+  .hero-left{padding:30px 20px 40px 20px;}
   .hero-right{padding:40px 20px 56px 20px;}
   .method-badge{padding:10px 22px;}
   .method-title{font-size:32px;letter-spacing:0.5px;}
