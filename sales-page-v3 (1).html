@@ -38,6 +38,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:fl
 .hero::before{display:none;}
 .hero-inner{width:100%;display:grid;grid-template-columns:1fr 1fr;align-items:center;}
 .hero-left{min-width:0;padding:80px 52px 80px 52px;background:var(--bg);}
+.method-badge{display:inline-block;border:1.5px solid var(--ink);padding:10px 28px;margin-bottom:16px;animation:fadeUp 0.7s ease both;max-width:100%;}
+.method-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--ink);letter-spacing:1px;line-height:1;white-space:nowrap;}
 .hero-eyebrow{font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:26px;animation:fadeUp 0.7s ease both;}
 .hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,66px);font-weight:600;line-height:1.1;color:var(--ink);margin-bottom:26px;animation:fadeUp 0.7s 0.1s ease both;}
 .hero-headline em{font-style:italic;color:var(--gold);}
@@ -203,7 +205,6 @@ section{padding:96px 48px;}
 .about-body{font-size:13.5px;line-height:1.9;color:rgba(250,247,242,0.6);}
 .about-body p{margin-bottom:16px;}
 .about-body strong{color:rgba(250,247,242,0.85);font-weight:600;}
-.about-right{}
 .about-credentials{list-style:none;margin-bottom:32px;}
 .about-credentials li{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:300;color:rgba(250,247,242,0.55);padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:14px;align-items:flex-start;line-height:1.55;}
 .about-credentials li::before{content:'—';color:var(--gold-light);flex-shrink:0;margin-top:1px;}
@@ -218,6 +219,7 @@ section{padding:96px 48px;}
 .prog-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-weight:300;color:var(--ink);line-height:1.2;margin-bottom:14px;}
 .prog-headline em{font-style:italic;color:var(--gold);}
 .prog-sub{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:300;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.8;}
+.prog-position{font-family:'Libre Baskerville',Georgia,serif;font-size:13.5px;line-height:1.85;color:var(--ink);max-width:680px;margin:18px auto 0;}
 .prog-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:44px;}
 .prog-card{background:var(--bg);border:1px solid var(--rule);padding:44px 36px;position:relative;}
 .prog-card.featured{background:var(--dark);border-color:var(--gold);}
@@ -340,6 +342,8 @@ footer{background:var(--dark);padding:56px 48px;}
   section{padding:52px 16px;}
   .hero-left{padding:44px 20px 40px 20px;}
   .hero-right{padding:40px 20px 56px 20px;}
+  .method-badge{padding:10px 22px;}
+  .method-title{font-size:32px;letter-spacing:0.5px;}
 
   /* Typography scale-down for mobile */
   .hero-headline{font-size:clamp(36px,9vw,52px) !important;font-weight:700 !important;line-height:1.1;}
@@ -442,13 +446,13 @@ footer{background:var(--dark);padding:56px 48px;}
 
 <nav>
   <div class="nav-logo">Inside-Out <span>Transformation</span></div>
-  <a href="https://www.dt.coach/yourcall" class="nav-cta">Book a Call</a>
+  <a href="https://tidycal.com/darrentebbenham/diagnostic" class="nav-cta">Book a Call</a>
   <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 <div class="nav-menu" id="navMenu">
-  <a href="https://www.dt.coach/yourcall" onclick="toggleMenu()">Book a Diagnostic Call</a>
+  <a href="https://tidycal.com/darrentebbenham/diagnostic" onclick="toggleMenu()">Book a Diagnostic Call</a>
   <a href="https://www.dt.coach/profile" onclick="toggleMenu()">Take the 2.0 Profile Test</a>
 </div>
 
@@ -456,14 +460,14 @@ footer{background:var(--dark);padding:56px 48px;}
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
-      <div style="display:inline-block;border:1.5px solid var(--ink);padding:10px 28px;margin-bottom:16px;animation:fadeUp 0.7s ease both;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--ink);letter-spacing:1px;line-height:1;">The <span style="color:var(--gold);">2.0</span> Method</div>
+      <div class="method-badge">
+        <div class="method-title">The <span style="color:var(--gold);">2.0</span> Method</div>
       </div>
       <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:20px;max-width:480px;animation:fadeUp 0.7s 0.05s ease both;">Most weight loss programmes address the behaviour. The 2.0 Method addresses what's running it.</p>
       <h1 class="hero-headline">Willpower, motivation,<br>and being strong-minded<br><em>won't fix this.</em><br>Here's why.</h1>
       <p class="hero-sub">This isn't about information. You have enough of that. It's about the part of you that already knows what to do — <strong>and doesn't.</strong> Understanding why that gap exists, and closing it permanently, is what the 2.0 Method was built to do.</p>
       <div class="hero-actions">
-        <a href="https://www.dt.coach/yourcall" class="btn-gold">Book a Diagnostic Call</a>
+        <a href="https://tidycal.com/darrentebbenham/diagnostic" class="btn-gold">Book a Diagnostic Call</a>
         <a href="https://www.dt.coach/profile" class="btn-outline">Take the 2.0 Profile Test</a>
       </div>
     </div>
@@ -887,6 +891,7 @@ footer{background:var(--dark);padding:56px 48px;}
       <div class="rule-gold center"></div>
       <h2 class="prog-headline">Two ways to work.<br><em>One method.</em></h2>
       <p class="prog-sub">Both programmes run the complete 2.0 Method — The Code, The Shift, The Switch, and The Rewrite. The difference is pace, proximity, and depth of access.</p>
+      <p class="prog-position">This isn't a course. It's not a coaching package. It's a deep transformation container built to change the part of you that keeps reverting — so consistency becomes identity, not effort.</p>
     </div>
     <div class="prog-cards reveal">
       <div class="prog-card">
@@ -919,7 +924,7 @@ footer{background:var(--dark);padding:56px 48px;}
           <li>Suitable for clinical complexity — obesity, diabetes, post-bariatric</li>
         </ul>
         <div class="prog-price">From <strong>£4,000</strong> · 3-month programme</div>
-        <a href="https://www.dt.coach/yourcall" class="btn-prog">Book a Diagnostic Call</a>
+        <a href="https://tidycal.com/darrentebbenham/diagnostic" class="btn-prog">Book a Diagnostic Call</a>
       </div>
     </div>
     <p class="prog-note reveal">Not sure which is right for you? <strong>The diagnostic call will tell you.</strong> It's free, 30 minutes, and you'll leave with clarity regardless of whether we work together.</p>
@@ -1000,7 +1005,7 @@ footer{background:var(--dark);padding:56px 48px;}
       <p class="cta-body">Thirty minutes. No pitch. No obligation. You will leave with clarity on exactly what's driving your pattern — and whether the 2.0 Method is the right fit. <strong>Even if we don't work together, the call will be worth your time.</strong></p>
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--muted);margin-bottom:32px;line-height:1.6;">"When biology is on your side, consistency stops being a personality trait<br>and becomes the natural result."</div>
       <div class="cta-buttons">
-        <a href="https://www.dt.coach/yourcall" class="btn-gold">Book a Diagnostic Call</a>
+        <a href="https://tidycal.com/darrentebbenham/diagnostic" class="btn-gold">Book a Diagnostic Call</a>
         <a href="https://www.dt.coach/profile" class="btn-outline">Take the Free 2.0 Profile First</a>
       </div>
       <p class="cta-small">Calls typically available within 2–3 weeks. If you're considering it, book now.</p>
